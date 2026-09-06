@@ -4,53 +4,47 @@
   ("IN STOCK" / "MADE TO ORDER"), with a smaller secondary line
   underneath giving the dispatch/production timeframe.
 
-  Made-to-order is decided from a "made-to-order" product tag, set
-  server-side via Liquid - NOT from the variant's inventory_quantity /
-  inventory_policy. Those two fields are simply not present on the
-  public storefront product JSON that Alpine reads from client-side
-  (verified directly: fetching /products/<handle>.js returns
-  inventory_management and available, but no inventory_quantity or
-  inventory_policy on the variant objects) - so any client-side check
-  against them silently evaluates to false/undefined, which is why the
-  status was stuck on "IN STOCK" for every ring regardless of stock.
+  Reads real per-variant inventory from variant_inventory_map (built in
+  script__product.liquid), keyed by current_variant_id - NOT from
+  current_variant_inventory_quantity/policy, which go undefined the
+  moment a customer switches variant (the public product JSON that
+  refreshes them on switch doesn't include those two fields - verified
+  live). variant_inventory_map is populated straight from Liquid, which
+  does have the real numbers, so it stays correct across size/variant
+  changes.
 
-  Tag this product "made-to-order" in Shopify Admin to show the
-  made-to-order state; otherwise it's treated as in stock. This is
-  product-level (not per-variant), so it doesn't need to react to
-  variant switches the way price/options do.
+  Made-to-order = tracked inventory, 0 or less on hand, and policy set
+  to "continue" (Shopify's own "continue selling when out of stock").
 
   Usage:
     {% render 'product__availability' %}
 {% endcomment %}
 
-{% assign is_made_to_order = false %}
-{% if product.tags contains 'made-to-order' %}
-  {% assign is_made_to_order = true %}
-{% endif %}
-
 <div
   class="px-4 mb-3"
   x-show="current_variant_exists && current_variant_available && all_options_selected"
   x-cloak
+  x-data="{
+    get is_made_to_order() {
+      const v = variant_inventory_map[current_variant_id];
+      return !!v && v.tracked && v.qty <= 0 && v.policy == 'continue';
+    }
+  }"
 >
   <div class="flex items-center gap-2">
     <span
       class="inline-block h-2 w-2 rounded-full"
-      style="background-color: {% if is_made_to_order %}#8a8a8a{% else %}#4caf50{% endif %};"
+      :style="is_made_to_order ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
     ></span>
-    <span class="type--small">
-      {% if is_made_to_order %}
-        MADE TO ORDER
-      {% else %}
-        IN STOCK
-      {% endif %}
+    <span class="type--small" x-text="is_made_to_order ? 'MADE TO ORDER' : 'IN STOCK'">
+      {% comment %} No-JS fallback {% endcomment %}
+      IN STOCK
     </span>
   </div>
-  <div class="type--small opacity-75 mt-1">
-    {% if is_made_to_order %}
-      (production takes 10 business days, then dispatched)
-    {% else %}
-      (dispatches within 2 business days)
-    {% endif %}
+  <div
+    class="type--small opacity-75 mt-1"
+    x-text="is_made_to_order ? '(production takes 10 business days, then dispatched)' : '(dispatches within 2 business days)'"
+  >
+    (dispatches within 2 business days)
   </div>
 </div>

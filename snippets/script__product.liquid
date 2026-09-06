@@ -83,6 +83,26 @@
   current_variant_inventory_quantity: {{ product.selected_or_first_available_variant.inventory_quantity }},
   current_variant_inventory_policy: '{{ product.selected_or_first_available_variant.inventory_policy }}',
   current_variant_inventory_management: '{{ product.selected_or_first_available_variant.inventory_management }}',
+  {% comment %}
+    Real per-variant inventory, keyed by variant id. Needed because the
+    public product JSON that assets/main-a0a73eb0.js uses to refresh
+    current_variant_inventory_* on a variant switch does NOT include
+    inventory_quantity/inventory_policy (verified live) - so those two
+    fields go undefined the moment a customer picks a different size.
+    Liquid has the real numbers server-side regardless, so read from
+    this map (keyed by current_variant_id, which does update correctly)
+    instead of trusting current_variant_inventory_* after the first
+    render.
+  {% endcomment %}
+  variant_inventory_map: {
+    {% for variant in product.variants %}
+      {{ variant.id }}: {
+        qty: {{ variant.inventory_quantity | default: 0 }},
+        policy: '{{ variant.inventory_policy }}',
+        tracked: {% if variant.inventory_management %}true{% else %}false{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  },
   {% comment %} Basics {% endcomment %}
   quantity: 1,
   calculated_price: {{ product.price }},
