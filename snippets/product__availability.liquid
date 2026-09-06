@@ -4,22 +4,26 @@
   ("IN STOCK" / "MADE TO ORDER"), with a smaller secondary line
   underneath giving the dispatch/production timeframe.
 
-  Made-to-order is read from the selected variant's real Shopify
-  inventory state (tracked, zero on hand, policy set to "continue"
-  selling) - the same signal Shopify itself uses to allow adding an
-  out-of-stock variant to cart. Reactive to variant switches since
-  current_variant_inventory_* is already kept in sync on selection in
-  assets/main-a0a73eb0.js.
+  Made-to-order is decided from a "made-to-order" product tag, set
+  server-side via Liquid - NOT from the variant's inventory_quantity /
+  inventory_policy. Those two fields are simply not present on the
+  public storefront product JSON that Alpine reads from client-side
+  (verified directly: fetching /products/<handle>.js returns
+  inventory_management and available, but no inventory_quantity or
+  inventory_policy on the variant objects) - so any client-side check
+  against them silently evaluates to false/undefined, which is why the
+  status was stuck on "IN STOCK" for every ring regardless of stock.
 
-  Dot color uses an inline style rather than a Tailwind utility class:
-  assets/styles-816e6670.css only compiles the utility classes actually
-  used elsewhere in the theme, and no bg-green-*/bg-red-* classes are
-  present there, so an arbitrary color class here would silently not
-  render.
+  Tag this product "made-to-order" in Shopify Admin to show the
+  made-to-order state; otherwise it's treated as in stock. This is
+  product-level (not per-variant), so it doesn't need to react to
+  variant switches the way price/options do.
 
   Usage:
     {% render 'product__availability' %}
 {% endcomment %}
+
+{% assign is_made_to_order = product.tags contains 'made-to-order' %}
 
 <div
   class="px-4 mb-3"
@@ -29,20 +33,21 @@
   <div class="flex items-center gap-2">
     <span
       class="inline-block h-2 w-2 rounded-full"
-      :style="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
+      style="background-color: {% if is_made_to_order %}#8a8a8a{% else %}#4caf50{% endif %};"
     ></span>
-    <span
-      class="type--small"
-      x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'MADE TO ORDER' : 'IN STOCK'"
-    >
-      {% comment %} No-JS fallback {% endcomment %}
-      IN STOCK
+    <span class="type--small">
+      {% if is_made_to_order %}
+        MADE TO ORDER
+      {% else %}
+        IN STOCK
+      {% endif %}
     </span>
   </div>
-  <div
-    class="type--small opacity-75 mt-1"
-    x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? '(production takes 10 business days, then dispatched)' : '(dispatches within 2 business days)'"
-  >
-    (dispatches within 2 business days)
+  <div class="type--small opacity-75 mt-1">
+    {% if is_made_to_order %}
+      (production takes 10 business days, then dispatched)
+    {% else %}
+      (dispatches within 2 business days)
+    {% endif %}
   </div>
 </div>
