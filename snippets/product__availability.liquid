@@ -23,7 +23,10 @@
     {% render 'product__availability' %}
 {% endcomment %}
 
-{% assign is_made_to_order = product.tags contains 'made-to-order' %}
+{% assign is_made_to_order = false %}
+{% if product.tags contains 'made-to-order' %}
+  {% assign is_made_to_order = true %}
+{% endif %}
 
 <div
   class="px-4 mb-3"
