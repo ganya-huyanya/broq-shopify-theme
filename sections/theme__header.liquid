@@ -112,14 +112,17 @@
             "
           >
         {% else %}
-          <a 
-            href="{{ link.url }}" 
+          <a
+            href="{{ link.url }}"
             class="
               header__link animation-300 flex items-center py-6 no-underline
               {{ section.settings.bar_capitilization }}
               {{ section.settings.bar_font }}
               {% if link.child_active %}!underline{% endif %}
               {% if link.active %}!underline{% endif %}
+              {% if link.url contains 'collections/all' or link.url contains 'collections/view-all' %}
+                !font-bold
+              {% endif %}
             "
           >
         {% endif %}
