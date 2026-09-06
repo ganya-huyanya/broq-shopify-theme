@@ -175,6 +175,24 @@
           </div>
         </button>
 
+        {% comment %}
+          Availability / dispatch message.
+          Made-to-order products must carry the "made-to-order" tag in Shopify Admin;
+          everything else is treated as in-stock. Static per-product (not per-variant)
+          since made-to-order status is a product-level fact, not a variant one.
+        {% endcomment %}
+        <div
+          class="type--small mt-2 mb-2"
+          x-show="current_variant_exists && current_variant_available && all_options_selected"
+          x-cloak
+        >
+          {% if product.tags contains 'made-to-order' %}
+            <span>MADE TO ORDER &mdash; production takes 10 business days, then dispatched</span>
+          {% else %}
+            <span>IN STOCK &mdash; dispatches within 2 business days</span>
+          {% endif %}
+        </div>
+
         {% comment %} Add to cart {% endcomment %}
         {% comment %} - Button will be hidden for when is_edit_section while variants aren't new {% endcomment %}
         <button
