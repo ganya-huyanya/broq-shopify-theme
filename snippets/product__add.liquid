@@ -219,9 +219,7 @@
               {% if is_edit_section %}
                 {{ 'actions.save_changes' | t }}
               {% else %}
-                <span
-                  x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'HANDCRAFTED TO ORDER' : {{ 'actions.add_to_cart' | t | json }}"
-                >{{ 'actions.add_to_cart' | t }}</span>
+                {{ 'actions.add_to_cart' | t }}
               {% endif %}
               {% if settings.show_button_prices %}
                 {% if settings.type_seperator == 'dot' %}·{% else %}|{% endif %}
