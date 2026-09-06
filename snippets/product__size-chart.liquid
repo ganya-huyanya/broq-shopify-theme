@@ -1,0 +1,138 @@
+<!-- snippets/product__size-chart.liquid -->
+{% comment %}
+  Size-chart (table) accordion block for product sections.
+
+  Parses a delimited textarea (block.settings.table_data) into an HTML <table>
+  and renders it inside the shared collapsible (component__accordion), so it
+  matches the existing text accordion's open/close behaviour and styling.
+
+  Accepts:
+  - block: {object} The size_chart block.
+
+  Data format — one row per line, columns split by the chosen delimiter.
+  When 'first_row_header' is enabled the first line becomes the table header:
+    US Size | EU Size | MM Circumference
+    4.5 | 47 | 47.0
+    5 | 49 | 49.0
+{% endcomment %}
+
+{%- liquid
+  assign delimiter = block.settings.delimiter | default: '|'
+  assign rows = block.settings.table_data | strip | newline_to_br | split: '<br />'
+  assign first_row_cells = rows.first | strip | split: delimiter
+  assign column_count = first_row_cells.size
+  assign min_table_width = column_count | times: 5
+-%}
+
+{%- capture table_html -%}
+  <div class="product-size-chart-scroll">
+    <table
+      class="product-size-chart product-size-chart--{{ block.settings.density }}"
+      {% if min_table_width > 0 %}style="min-width: {{ min_table_width }}rem;"{% endif %}
+    >
+      {%- if block.settings.first_row_header -%}
+        {%- assign header_cells = rows.first | strip | split: delimiter -%}
+        <thead class="{{ block.settings.header_scheme }}">
+          <tr>
+            {%- for cell in header_cells -%}
+              <th scope="col">{{ cell | strip | escape }}</th>
+            {%- endfor -%}
+          </tr>
+        </thead>
+      {%- endif -%}
+      <tbody>
+        {%- for row in rows -%}
+          {%- if forloop.first and block.settings.first_row_header -%}{%- continue -%}{%- endif -%}
+          {%- assign row_trimmed = row | strip -%}
+          {%- if row_trimmed == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign cells = row_trimmed | split: delimiter -%}
+          <tr>
+            {%- for cell in cells -%}
+              <td>{{ cell | strip | escape }}</td>
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+{%- endcapture -%}
+
+{%- capture accordion_label -%}
+  {%- unless block.settings.icon == blank -%}
+    {% render 'component__icon', icon: block.settings.icon, size: '24', class: 'mr-2' %}
+  {%- endunless -%}
+  {{ block.settings.title }}
+{%- endcapture -%}
+
+{%- assign is_button = true -%}
+{%- if block.settings.color_scheme == 'minimal' -%}
+  {%- assign is_button = false -%}
+{%- endif -%}
+
+{%- capture button_classes -%}
+{{ block.settings.color_scheme }}
+{%- unless is_button %} pt-4{%- endunless -%}
+{%- endcapture -%}
+
+<style>
+  .product-size-chart-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .product-size-chart {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: inherit;
+  }
+  .product-size-chart th,
+  .product-size-chart td {
+    border: 1px solid rgba(127, 127, 127, 0.4);
+    padding: 0.6rem 0.75rem;
+    text-align: center;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .product-size-chart--comfortable th,
+  .product-size-chart--comfortable td {
+    padding: 0.6rem 0.75rem;
+  }
+  .product-size-chart--compact th,
+  .product-size-chart--compact td {
+    padding: 0.3rem 0.5rem;
+    line-height: 1.3;
+  }
+  .product-size-chart--condensed th,
+  .product-size-chart--condensed td {
+    padding: 0.15rem 0.4rem;
+    line-height: 1.15;
+  }
+  .product-size-chart thead th {
+    font-weight: 600;
+    background: rgba(127, 127, 127, 0.08);
+  }
+</style>
+
+<div
+  id="product-accordion"
+  class="
+    px-4
+    {{ block.settings.color_border }}
+    {{ block.settings.style_border }}
+  "
+  style="
+    padding-top:{{ block.settings.spacing_top }}px;
+    padding-bottom:{{ block.settings.spacing_bottom }}px;
+  "
+>
+  {% render 'component__accordion',
+    container_class: '',
+    inner_class: 'rte',
+    button_class: button_classes,
+    button_label: accordion_label,
+    content: table_html,
+    is_button: is_button,
+    enable_open: block.settings.enable_open
+  %}
+</div>

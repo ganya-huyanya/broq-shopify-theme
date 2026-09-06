@@ -1,0 +1,92 @@
+<!-- snippets/product__linked-products.liquid -->
+{% comment %}
+  Block to display a swatch of linked products.
+
+  Accepts:
+  - blocksettings: {object} Liquid object of block settings.
+
+  Usage:
+    {% render 'product__linked-products',
+      block: block
+     %}
+
+  Pro tips:
+    -
+{% endcomment %}
+
+{% liquid
+  # Set swatch size
+  assign swatch_size = ''
+  case settings.product_swatch_style
+    when 'small'
+      assign swatch_size = '!w-8 !h-8'
+    when 'medium'
+      assign swatch_size = '!w-16 !h-16'
+    when 'large'
+      assign swatch_size = '!w-24 !h-24'
+  endcase
+%}
+
+{% capture slides %}
+  {% for linked_product in product.metafields.custom.linked_collection.value.products %}
+    <div 
+      class="
+        flex flex-none snap-center justify-center
+        {% if settings.enable_animations %}
+          motion-safe:scroll-fadeinhalf-inline-2-20
+        {% endif %}
+      " 
+      {% if section.settings.show_images %}
+        style="width:{{ section.settings.style_size }}px;"
+      {% endif %}
+      x-bind:data-slide="{{ forloop.index0 }}"
+      x-intersect:enter.half="index = {{ forloop.index0 }};">
+      <button
+        class="btn btn--plain btn--small focus:border--focus--inset hover:border--focus--inset bg-contain bg-center {{ swatch_size }}"
+        :class="
+          {
+            'btn--plain border--focus--inset' : '{{ product.handle }}' == '{{ linked_product.handle }}',
+            'btn--plain' : '{{ product.handle }}' != '{{ linked_product.handle }}',
+          }
+        "
+        style="background-image: url('{{ linked_product.featured_image | image_url: width: 128 }}');"
+        aria-label="{{ value }}"
+        type="button"
+        @click="window.location.href = '{{ linked_product.url }}'"
+      >
+      </button>
+    </div>
+    {% assign slider_size = slider_size | plus: 1 %}
+  {% endfor %}
+{% endcapture %}
+{% assign slider_size = slider_size | minus: 1 %}
+
+{% if slider_size > 0 %}
+  <div
+    id="product-linked-products"
+    class="
+      px-4
+      {{ block.settings.color_scheme }}
+      {{ block.settings.color_border }}
+      {{ block.settings.style_border }}
+    "
+    style="
+      padding-top:{{ block.settings.spacing_top }}px;
+      padding-bottom:{{ block.settings.spacing_bottom }}px;
+    "
+  >
+    {% if block.settings.linked_products_title != empty %}
+      <p class="type--smaller mb-0 flex opacity-75">{{ block.settings.linked_products_title }}</p>
+    {% endif %}
+    {% render 'component__slider',
+      container_class: '!padding--r-element !padding--l-element',
+      slider_size: slider_size,
+      slides: slides,
+      enable_arrows_over_alt: true,
+      enable_arrows_over_single: true,
+      enable_scroll_margin: false,
+      enable_default_gap: true,
+      disable_scroll_padding: true
+    %}
+  </div>
+{% endif %}

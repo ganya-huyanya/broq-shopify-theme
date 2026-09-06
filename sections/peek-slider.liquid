@@ -1,0 +1,85 @@
+<div class="peek-slider-wrapper">
+  <div class="peek-slider">
+    {% for block in section.blocks %}
+      <div class="slide">
+        <img loading="lazy" src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.caption | escape }}">
+        {% if block.settings.caption != blank %}
+          <div class="caption">{{ block.settings.caption }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.peek-slider-wrapper {
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+.peek-slider {
+  display: flex;
+  gap: 20px;
+}
+.slide {
+  flex: 0 0 90vw;
+  scroll-snap-align: start;
+  position: relative;
+}
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0px;
+}
+.caption {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background-color: #000;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 0px;
+  font-size: 14px;
+  display: inline-block;
+}
+@media (min-width: 768px) {
+  .slide {
+    flex: 0 0 40vw;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Peek Slider",
+  "max_blocks": 10,
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Add a caption"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Peek Slider"
+    }
+  ]
+}
+{% endschema %}
+

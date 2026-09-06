@@ -1,0 +1,12 @@
+{
+  "src/entrypoints/main.js": {
+    "file": "main-a0a73eb0.js",
+    "isEntry": true,
+    "src": "src/entrypoints/main.js"
+  },
+  "src/entrypoints/styles.css": {
+    "file": "styles-816e6670.css",
+    "isEntry": true,
+    "src": "src/entrypoints/styles.css"
+  }
+}
