@@ -177,20 +177,20 @@
 
         {% comment %}
           Availability / dispatch message.
-          Made-to-order products must carry the "made-to-order" tag in Shopify Admin;
-          everything else is treated as in-stock. Static per-product (not per-variant)
-          since made-to-order status is a product-level fact, not a variant one.
+          Made-to-order is read directly from the selected variant's real Shopify
+          inventory state (tracked, zero on hand, policy set to "continue" selling) -
+          the same signal Shopify itself uses to allow adding an out-of-stock variant
+          to cart. Reactive to variant switches since current_variant_inventory_*
+          are already updated on selection in assets/main-a0a73eb0.js.
         {% endcomment %}
         <div
           class="type--small mt-2 mb-2"
           x-show="current_variant_exists && current_variant_available && all_options_selected"
           x-cloak
+          x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'HANDCRAFTED TO ORDER — production takes 10 business days, then dispatched' : 'IN STOCK — dispatches within 2 business days'"
         >
-          {% if product.tags contains 'made-to-order' %}
-            <span>MADE TO ORDER &mdash; production takes 10 business days, then dispatched</span>
-          {% else %}
-            <span>IN STOCK &mdash; dispatches within 2 business days</span>
-          {% endif %}
+          {% comment %} No-JS fallback {% endcomment %}
+          IN STOCK &mdash; dispatches within 2 business days
         </div>
 
         {% comment %} Add to cart {% endcomment %}
@@ -219,7 +219,9 @@
               {% if is_edit_section %}
                 {{ 'actions.save_changes' | t }}
               {% else %}
-                {{ 'actions.add_to_cart' | t }}
+                <span
+                  x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'HANDCRAFTED TO ORDER' : {{ 'actions.add_to_cart' | t | json }}"
+                >{{ 'actions.add_to_cart' | t }}</span>
               {% endif %}
               {% if settings.show_button_prices %}
                 {% if settings.type_seperator == 'dot' %}·{% else %}|{% endif %}
