@@ -1,0 +1,48 @@
+<!-- snippets/product__availability.liquid -->
+{% comment %}
+  Availability status shown right after price: a colored dot + label
+  ("IN STOCK" / "MADE TO ORDER"), with a smaller secondary line
+  underneath giving the dispatch/production timeframe.
+
+  Made-to-order is read from the selected variant's real Shopify
+  inventory state (tracked, zero on hand, policy set to "continue"
+  selling) - the same signal Shopify itself uses to allow adding an
+  out-of-stock variant to cart. Reactive to variant switches since
+  current_variant_inventory_* is already kept in sync on selection in
+  assets/main-a0a73eb0.js.
+
+  Dot color uses an inline style rather than a Tailwind utility class:
+  assets/styles-816e6670.css only compiles the utility classes actually
+  used elsewhere in the theme, and no bg-green-*/bg-red-* classes are
+  present there, so an arbitrary color class here would silently not
+  render.
+
+  Usage:
+    {% render 'product__availability' %}
+{% endcomment %}
+
+<div
+  class="px-4 mb-3"
+  x-show="current_variant_exists && current_variant_available && all_options_selected"
+  x-cloak
+>
+  <div class="flex items-center gap-2">
+    <span
+      class="inline-block h-2 w-2 rounded-full"
+      :style="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
+    ></span>
+    <span
+      class="type--small"
+      x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? 'MADE TO ORDER' : 'IN STOCK'"
+    >
+      {% comment %} No-JS fallback {% endcomment %}
+      IN STOCK
+    </span>
+  </div>
+  <div
+    class="type--small opacity-75 mt-1"
+    x-text="(current_variant_inventory_management && current_variant_inventory_quantity <= 0 && current_variant_inventory_policy == 'continue') ? '(production takes 10 business days, then dispatched)' : '(dispatches within 2 business days)'"
+  >
+    (dispatches within 2 business days)
+  </div>
+</div>
