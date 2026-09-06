@@ -36,15 +36,18 @@
       class="inline-block h-2 w-2 rounded-full"
       :style="is_made_to_order ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
     ></span>
-    <span class="type--small" x-text="is_made_to_order ? 'MADE TO ORDER' : 'IN STOCK'">
+    <span
+      class="type--small"
+      x-text="is_made_to_order ? {{ 'info.made_to_order_status' | t | json }} : {{ 'info.in_stock_status' | t | json }}"
+    >
       {% comment %} No-JS fallback {% endcomment %}
-      IN STOCK
+      {{ 'info.in_stock_status' | t }}
     </span>
   </div>
   <div
     class="type--small opacity-75 mt-1"
-    x-text="is_made_to_order ? '(production takes 10 business days, then dispatched)' : '(dispatches within 2 business days)'"
+    x-text="is_made_to_order ? {{ 'info.made_to_order_detail' | t | json }} : {{ 'info.in_stock_detail' | t | json }}"
   >
-    (dispatches within 2 business days)
+    {{ 'info.in_stock_detail' | t }}
   </div>
 </div>
