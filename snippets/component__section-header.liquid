@@ -35,7 +35,18 @@
       "
     >
       {% unless section.settings.heading == blank %}
-        <h3 class="type__heading-1">{{ section.settings.heading }}</h3>
+        {% comment %}
+          "Recently viewed" is repeated, merchant-set literal text across
+          many section instances, only translatable through Shopify's
+          per-theme-ID content system - same issue as the product
+          accordion headings, same fix. Any other heading text stays
+          literal.
+        {% endcomment %}
+        {% if section.settings.heading == 'Recently viewed' %}
+          <h3 class="type__heading-1">{{ 'info.recently_viewed_heading' | t }}</h3>
+        {% else %}
+          <h3 class="type__heading-1">{{ section.settings.heading }}</h3>
+        {% endif %}
       {% endunless %}
       {% unless section.settings.enable_split_heading %}
         {% unless section.settings.content == blank %}

@@ -65,12 +65,27 @@
     padding-bottom:{{ block.settings.spacing_bottom }}px;
   "
 >
+  {% comment %}
+    The shared DELIVERY / RETURN AND EXCHANGE boilerplate (same as the
+    headings above) also only translates through Shopify's per-theme-ID
+    content system, so localize it here too via a substring match
+    robust to the minor markup differences between product.json and
+    product.earrings.json's copies of this text. Anything else the
+    merchant writes stays literal.
+  {% endcomment %}
+  {% assign accordion_content = block.settings.content %}
+  {% if block.settings.content contains 'Shipping from Kyiv and London' %}
+    {% assign accordion_content = 'info.accordion_delivery_content_html' | t %}
+  {% elsif block.settings.content contains 'bracelets, necklaces' %}
+    {% assign accordion_content = 'info.accordion_return_exchange_content_html' | t %}
+  {% endif %}
+
   {% render 'component__accordion',
     container_class: '',
     inner_class: 'rte',
     button_class: button_classes,
     button_label: accordion_label,
-    content: block.settings.content,
+    content: accordion_content,
     is_button: is_button,
     enable_open: block.settings.enable_open
   %}
