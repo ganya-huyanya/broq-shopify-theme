@@ -25,7 +25,7 @@
   x-show="current_variant_exists && current_variant_available && all_options_selected"
   x-cloak
   x-data="{
-    get is_made_to_order() {
+    is_made_to_order() {
       const v = variant_inventory_map[current_variant_id];
       return !!v && v.tracked && v.qty <= 0 && v.policy == 'continue';
     }
@@ -34,11 +34,11 @@
   <div class="flex items-center gap-2">
     <span
       class="inline-block h-2 w-2 rounded-full"
-      :style="is_made_to_order ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
+      :style="is_made_to_order() ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
     ></span>
     <span
       class="type--small"
-      x-text="is_made_to_order ? {{ 'info.made_to_order_status' | t | json }} : {{ 'info.in_stock_status' | t | json }}"
+      x-text="is_made_to_order() ? {{ 'info.made_to_order_status' | t | json }} : {{ 'info.in_stock_status' | t | json }}"
     >
       {% comment %} No-JS fallback {% endcomment %}
       {{ 'info.in_stock_status' | t }}
@@ -46,7 +46,7 @@
   </div>
   <div
     class="type--small opacity-75 mt-1"
-    x-text="is_made_to_order ? {{ 'info.made_to_order_detail' | t | json }} : {{ 'info.in_stock_detail' | t | json }}"
+    x-text="is_made_to_order() ? {{ 'info.made_to_order_detail' | t | json }} : {{ 'info.in_stock_detail' | t | json }}"
   >
     {{ 'info.in_stock_detail' | t }}
   </div>
