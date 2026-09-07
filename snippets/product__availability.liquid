@@ -38,7 +38,7 @@
     ></span>
     <span
       class="type--small"
-      x-text="is_made_to_order() ? {{ 'info.made_to_order_status' | t | json }} : {{ 'info.in_stock_status' | t | json }}"
+      x-text="is_made_to_order() ? {{ 'info.made_to_order_status' | t | json | escape }} : {{ 'info.in_stock_status' | t | json | escape }}"
     >
       {% comment %} No-JS fallback {% endcomment %}
       {{ 'info.in_stock_status' | t }}
@@ -46,7 +46,7 @@
   </div>
   <div
     class="type--small opacity-75 mt-1"
-    x-text="is_made_to_order() ? {{ 'info.made_to_order_detail' | t | json }} : {{ 'info.in_stock_detail' | t | json }}"
+    x-text="is_made_to_order() ? {{ 'info.made_to_order_detail' | t | json | escape }} : {{ 'info.in_stock_detail' | t | json | escape }}"
   >
     {{ 'info.in_stock_detail' | t }}
   </div>
