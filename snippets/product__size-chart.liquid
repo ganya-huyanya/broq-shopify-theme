@@ -57,11 +57,23 @@
   </div>
 {%- endcapture -%}
 
+{%- comment -%}
+  "SIZE CHART" translates via a theme locale key - see
+  product__accordion.liquid for why (per-theme-ID content translation
+  doesn't survive a new theme upload). Anything else the merchant
+  types stays literal.
+{%- endcomment -%}
+{%- if block.settings.title == 'SIZE CHART' -%}
+  {%- assign size_chart_title = 'info.accordion_size_chart' | t -%}
+{%- else -%}
+  {%- assign size_chart_title = block.settings.title -%}
+{%- endif -%}
+
 {%- capture accordion_label -%}
   {%- unless block.settings.icon == blank -%}
     {% render 'component__icon', icon: block.settings.icon, size: '24', class: 'mr-2' %}
   {%- endunless -%}
-  {{ block.settings.title }}
+  {{ size_chart_title }}
 {%- endcapture -%}
 
 {%- assign is_button = true -%}

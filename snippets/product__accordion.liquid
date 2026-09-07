@@ -14,11 +14,31 @@
   - Create and use metafields to display additional product data here.
 {% endcomment %}
 
+{% comment %}
+  Known recurring English headings translate via theme locale keys
+  (so they work immediately in any theme/language without depending
+  on Shopify's per-theme-ID content translation system, which doesn't
+  carry over when a new theme is uploaded/duplicated). Anything else
+  the merchant types stays as literal text, unchanged.
+{% endcomment %}
+{% case block.settings.title %}
+  {% when 'PRODUCT DETAILS' %}
+    {% assign accordion_title = 'info.accordion_product_details' | t %}
+  {% when 'HOW TO MEASURE MY RING SIZE' %}
+    {% assign accordion_title = 'info.accordion_how_to_measure_ring_size' | t %}
+  {% when 'DELIVERY' %}
+    {% assign accordion_title = 'info.accordion_delivery' | t %}
+  {% when 'RETURN AND EXCHANGE' %}
+    {% assign accordion_title = 'info.accordion_return_exchange' | t %}
+  {% else %}
+    {% assign accordion_title = block.settings.title %}
+{% endcase %}
+
 {% capture accordion_label %}
   {% unless block.settings.icon == blank %}
     {% render 'component__icon', icon: block.settings.icon, size: '24', class: 'mr-2' %}
   {% endunless %}
-  {{ block.settings.title }}
+  {{ accordion_title }}
 {% endcapture %}
 
 {% assign is_button = true %}
