@@ -35,7 +35,15 @@
         <thead class="{{ block.settings.header_scheme }}">
           <tr>
             {%- for cell in header_cells -%}
-              <th scope="col">{{ cell | strip | escape }}</th>
+              {%- assign cell_text = cell | strip -%}
+              {%- comment -%} Diameter/Circumference column headers translate via locale keys; US/UKR/UK sizing-system abbreviations stay as-is in every language. {%- endcomment -%}
+              {%- case cell_text -%}
+                {%- when 'Diameter (mm)' -%}
+                  {%- assign cell_text = 'info.size_chart_diameter_header' | t -%}
+                {%- when 'Circumference (mm)' -%}
+                  {%- assign cell_text = 'info.size_chart_circumference_header' | t -%}
+              {%- endcase -%}
+              <th scope="col">{{ cell_text | escape }}</th>
             {%- endfor -%}
           </tr>
         </thead>

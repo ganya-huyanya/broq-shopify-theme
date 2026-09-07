@@ -78,6 +78,10 @@
     {% assign accordion_content = 'info.accordion_delivery_content_html' | t %}
   {% elsif block.settings.content contains 'bracelets, necklaces' %}
     {% assign accordion_content = 'info.accordion_return_exchange_content_html' | t %}
+  {% elsif block.settings.content contains 'Recycled 925 sterling silver' and block.settings.content contains 'Handcrafted in Ukraine' %}
+    {% assign accordion_content = 'info.accordion_product_details_content_html' | t %}
+  {% elsif block.settings.content contains 'Wrap a strip of paper' %}
+    {% assign accordion_content = 'info.accordion_how_to_measure_content_html' | t %}
   {% endif %}
 
   {% render 'component__accordion',
