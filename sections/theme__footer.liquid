@@ -79,7 +79,7 @@
                   </div>
                 {% else %}
                   <div class="rte space-y-4">
-                    {{ block.settings.content }}
+                    {% if block.settings.content contains 'broq moments' %}{{ 'info.footer_instagram_cta' | t }}{% else %}{{ block.settings.content }}{% endif %}
                   </div>
                   <label
                     class="sr-only"
@@ -163,7 +163,7 @@
 
               {% unless block.settings.content == blank %}
                 <div class="rte space-y-4">
-                  {{ block.settings.content }}
+                  {% if block.settings.content contains 'broq moments' %}{{ 'info.footer_instagram_cta' | t }}{% else %}{{ block.settings.content }}{% endif %}
                 </div>
               {% endunless %}
 
@@ -342,7 +342,7 @@
                         </div>
                       {% else %}
                         <div class="rte space-y-4">
-                          {{ block.settings.content }}
+                          {% if block.settings.content contains 'broq moments' %}{{ 'info.footer_instagram_cta' | t }}{% else %}{{ block.settings.content }}{% endif %}
                         </div>
                         <label
                           class="sr-only"
@@ -417,7 +417,7 @@
 
                     {% unless block.settings.content == blank %}
                       <div class="rte space-y-4">
-                        {{ block.settings.content }}
+                        {% if block.settings.content contains 'broq moments' %}{{ 'info.footer_instagram_cta' | t }}{% else %}{{ block.settings.content }}{% endif %}
                       </div>
                     {% endunless %}
 

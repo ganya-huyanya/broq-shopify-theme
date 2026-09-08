@@ -132,8 +132,18 @@
                 x-transition:leave-end="opacity-0 translate-y-4"
               {% endif %}
             >
-              {% comment %} Text content {% endcomment %}
-              <span class="type--smaller rte">{{ block.settings.content }}</span>
+              {% comment %}
+                Text content. The default "Free worldwide shipping from
+                £250" announcement translates via a theme locale key
+                (same per-theme-ID content-translation issue as the
+                product accordions) - anything else the merchant types
+                stays literal.
+              {% endcomment %}
+              {% if block.settings.content contains 'Free worldwide shipping' %}
+                <span class="type--smaller rte">{{ 'info.announcement_free_shipping' | t }}</span>
+              {% else %}
+                <span class="type--smaller rte">{{ block.settings.content }}</span>
+              {% endif %}
 
               {% comment %} Arrow - if delay set to 0 {% endcomment %}
               {% if section.settings.announcement_delay == 0 %}

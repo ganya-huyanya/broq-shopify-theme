@@ -82,6 +82,8 @@
     {% assign accordion_content = 'info.accordion_product_details_content_html' | t %}
   {% elsif block.settings.content contains 'Wrap a strip of paper' %}
     {% assign accordion_content = 'info.accordion_how_to_measure_content_html' | t %}
+  {% elsif block.settings.content contains 'not eligible for return or refund' %}
+    {% assign accordion_content = 'info.accordion_earrings_return_content_html' | t %}
   {% endif %}
 
   {% render 'component__accordion',
