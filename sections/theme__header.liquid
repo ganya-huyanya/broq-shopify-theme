@@ -120,10 +120,19 @@
               {{ section.settings.bar_font }}
               {% if link.child_active %}!underline{% endif %}
               {% if link.active %}!underline{% endif %}
-              {% if link.url contains 'collections/all' or link.url contains 'collections/view-all' %}
-                font-bold
-              {% endif %}
             "
+            {% if link.url contains 'collections/all' or link.url contains 'collections/view-all' %}
+              {% comment %}
+                Inline style, not a Tailwind class: .font-bold and the
+                compiled-CSS class list both lose the specificity tie
+                against bar_font's own font-weight rule (same
+                specificity, bar_font comes later in source order), and
+                the !font-bold "important" variant was never compiled
+                (same purge issue as earlier color classes) - verified
+                live, class was present but computed weight stayed 400.
+              {% endcomment %}
+              style="font-weight: 700 !important;"
+            {% endif %}
           >
         {% endif %}
           {{ link.title }}
