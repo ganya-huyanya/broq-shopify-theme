@@ -4370,7 +4370,7 @@
     "you_save_amount": "Ви заощаджуєте {{ saved_amount }}",
     "in_stock_status": "В НАЯВНОСТІ",
     "made_to_order_status": "ПІД ЗАМОВЛЕННЯ",
-    "in_stock_detail": "(відправка протягом 3 робочих днів)",
+    "in_stock_detail": "(відправка протягом 24-48 годин)",
     "made_to_order_detail": "(виготовлення 10 робочих днів, потім відправка)",
     "accordion_product_details": "ХАРАКТЕРИСТИКИ",
     "accordion_how_to_measure_ring_size": "ЯК ВИМІРЯТИ РОЗМІР КАБЛУЧКИ?",

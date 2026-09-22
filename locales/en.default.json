@@ -206,7 +206,7 @@
     "you_save_amount": "You save {{ saved_amount }}",
     "in_stock_status": "IN STOCK",
     "made_to_order_status": "MADE TO ORDER",
-    "in_stock_detail": "(dispatches within 3 business days)",
+    "in_stock_detail": "(dispatches within 24-48hrs)",
     "made_to_order_detail": "(production takes 10 business days, then dispatched)",
     "accordion_product_details": "PRODUCT DETAILS",
     "accordion_how_to_measure_ring_size": "HOW TO MEASURE MY RING SIZE",
