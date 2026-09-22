@@ -28,17 +28,21 @@
     is_made_to_order() {
       const v = variant_inventory_map[current_variant_id];
       return !!v && v.tracked && v.qty <= 0 && v.policy == 'continue';
+    },
+    is_low_stock() {
+      const v = variant_inventory_map[current_variant_id];
+      return !!v && v.tracked && v.qty > 0 && v.qty <= 1;
     }
   }"
 >
   <div class="flex items-center gap-2">
     <span
       class="inline-block h-2 w-2 rounded-full"
-      :style="is_made_to_order() ? 'background-color:#8a8a8a' : 'background-color:#4caf50'"
+      :style="is_made_to_order() ? 'background-color:#8a8a8a' : (is_low_stock() ? 'background-color:#e8871e' : 'background-color:#4caf50')"
     ></span>
     <span
       class="type--small"
-      x-text="is_made_to_order() ? {{ 'info.made_to_order_status' | t | json | escape }} : {{ 'info.in_stock_status' | t | json | escape }}"
+      x-text="is_made_to_order() ? {{ 'info.made_to_order_status' | t | json | escape }} : (is_low_stock() ? {{ 'info.last_items_status' | t | json | escape }} : {{ 'info.in_stock_status' | t | json | escape }})"
     >
       {% comment %} No-JS fallback {% endcomment %}
       {{ 'info.in_stock_status' | t }}

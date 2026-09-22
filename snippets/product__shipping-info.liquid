@@ -1,0 +1,19 @@
+<!-- snippets/product__shipping-info.liquid -->
+{% comment %}
+  Shipping/duties reassurance bullets shown directly under the
+  Add to Cart button on product pages.
+
+  Usage:
+    {% render 'product__shipping-info' %}
+{% endcomment %}
+
+{% comment %}
+  Inline styles, not Tailwind utilities: this theme ships a pre-built
+  CSS file, so classes it doesn't already use elsewhere compile to
+  nothing.
+{% endcomment %}
+<ul class="type--small" style="margin-top: 1rem; padding-left: 1.1rem; list-style: disc; opacity: 0.9;">
+  <li style="margin-bottom: 0.25rem;">{{ 'info.shipping_free_worldwide' | t }}</li>
+  <li style="margin-bottom: 0.25rem;">{{ 'info.shipping_taxes_duties_included' | t }}</li>
+  <li>{{ 'info.shipping_ships_within' | t }}</li>
+</ul>

@@ -242,6 +242,10 @@
       </div>
     </div>
 
+    {% unless is_edit_section %}
+      {% render 'product__shipping-info' %}
+    {% endunless %}
+
     {% comment %} Set quantity to 1 when quantity input is disabled {% endcomment %}
     {% unless block.settings.enable_quantity %}
       <input
