@@ -50,7 +50,8 @@
   </div>
   <div
     class="type--small opacity-75 mt-1"
-    x-text="is_made_to_order() ? {{ 'info.made_to_order_detail' | t | json | escape }} : {{ 'info.in_stock_detail' | t | json | escape }}"
+    x-show="!is_made_to_order()"
+    x-text="{{ 'info.in_stock_detail' | t | json | escape }}"
   >
     {{ 'info.in_stock_detail' | t }}
   </div>
