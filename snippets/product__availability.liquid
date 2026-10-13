@@ -22,7 +22,7 @@
 
 <div
   class="px-4 mb-3"
-  x-show="current_variant_exists && current_variant_available && all_options_selected"
+  x-show="current_variant_exists && current_variant_available && all_options_selected && !is_made_to_order()"
   x-cloak
   x-data="{
     is_made_to_order() {
