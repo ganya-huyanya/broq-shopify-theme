@@ -19,54 +19,26 @@
 
       let productHandle = "{{ product.handle }}"
 
-      {% comment %} check if local storage for viewed products exists, if not create it {% endcomment %}
-      if(localStorage.getItem('recentlyViewedProducts')) {
-        let recentlyViewedProducts = JSON.parse(localStorage.getItem('recentlyViewedProducts'))
+      {% comment %}
+        The cached entry carries the prices the product JSON returned at
+        the moment it was viewed, so it also has to carry the currency
+        they were quoted in - the slider renders them with whatever money
+        format is active later, and a UAH amount drawn with a $ format
+        reads as a wildly wrong price. Entries in another currency are
+        filtered out on render (theme__scripts.liquid).
+      {% endcomment %}
+      let currency = "{{ cart.currency.iso_code }}"
 
-        {% comment %} if product is already on the list, don't add it. If it's not, add it {% endcomment %}
-        if(!recentlyViewedProducts.find((prod) => prod.handle === productHandle)) {
-
-          {% comment %} also need to check if the list is longer than max length (12) {% endcomment %}
-          {% comment %} if over limit replace the oldest (first) entry {% endcomment %}
-          if(recentlyViewedProducts.length === 12) {
-            recentlyViewedProducts.pop()
-            let newProduct;
-            fetch(`/products/${productHandle}.js`)
-              .then(response => response.json())
-              .then(data => newProduct = data)
-              .then(() => {
-                let newProducts = [newProduct,...recentlyViewedProducts]
-                localStorage.setItem("recentlyViewedProducts", JSON.stringify(newProducts))
-              })
-              .catch(err => console.log(err)) 
-          } 
-          else {
-            let newProduct;
-            fetch(`/products/${productHandle}.js`)
-              .then(response => response.json())
-              .then(data => newProduct = data)
-              .then(() => {
-                let newProducts = [newProduct,...recentlyViewedProducts]
-                localStorage.setItem("recentlyViewedProducts", JSON.stringify(newProducts))
-              })
-              .catch(err => console.log(err)) 
-          }
-
-        }
-      } 
-
-      {% comment %} Fetch product object by id {% endcomment %}
-      else {
-        let newProduct;
-        fetch(`/products/${productHandle}.js`)
-          .then(response => response.json())
-          .then(data => newProduct = data)
-          .then(() => {
-            let newProducts = [newProduct]
-            localStorage.setItem("recentlyViewedProducts", JSON.stringify(newProducts))
-          })
-          .catch(err => console.log(err)) 
-      }
+      {% comment %} Always re-fetch, so a price change updates the cached copy {% endcomment %}
+      fetch(`/products/${productHandle}.js`)
+        .then(response => response.json())
+        .then(data => {
+          let stored = JSON.parse(localStorage.getItem('recentlyViewedProducts') || '[]')
+          let others = stored.filter((prod) => prod.handle !== productHandle)
+          let newProducts = [{ ...data, currency: currency }, ...others].slice(0, 12)
+          localStorage.setItem("recentlyViewedProducts", JSON.stringify(newProducts))
+        })
+        .catch(err => console.log(err))
 
     });
   </script>

@@ -55,7 +55,7 @@
     pagination_loading: false, // {boolean} To show loading state in pagination
 
     // Recent products
-    recent_products: localStorage.getItem("recentlyViewedProducts") ? JSON.parse(localStorage.getItem("recentlyViewedProducts")) : [], // {array} Recently viewed products
+    recent_products: JSON.parse(localStorage.getItem("recentlyViewedProducts") || "[]").filter((prod) => prod.currency === "{{ cart.currency.iso_code }}"), // {array} Recently viewed products, minus any cached in another currency
 
     // Overlays
     age_overlay: localStorage.getItem("ageConfirmed") ? true : false, // {boolean} To toggle the age overlay
