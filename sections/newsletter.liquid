@@ -81,17 +81,37 @@
               "
             >
               {% form 'customer', class: 'flex w-full gap-4 flex-col' %}
+                {% comment %}
+                  The default newsletter copy translates through a theme
+                  locale key, like the announcement bar and footer - see
+                  snippets/product__accordion.liquid for why. Anything
+                  else the merchant types stays literal.
+                {% endcomment %}
                 {% unless block.settings.heading == blank %}
-                  <h3 class="type__heading-1">{{ block.settings.heading }}</h3>
+                  <h3 class="type__heading-1">
+                    {%- if block.settings.heading == 'Email sign-up' -%}
+                      {{ 'info.newsletter_heading' | t }}
+                    {%- else -%}
+                      {{ block.settings.heading }}
+                    {%- endif -%}
+                  </h3>
                 {% endunless %}
                 {% if form.posted_successfully? %}
                   <div class="space-y-4">
-                    {{ block.settings.success }}
+                    {% if block.settings.success contains 'You’ve been subscribed' %}
+                      {{ 'info.newsletter_success_html' | t }}
+                    {% else %}
+                      {{ block.settings.success }}
+                    {% endif %}
                   </div>
                 {% else %}
                   {% unless block.settings.content == blank %}
                     <div class="rte space-y-4">
-                      {{ block.settings.content }}
+                      {% if block.settings.content contains 'Subscribe to our Newsletter' %}
+                        {{ 'info.newsletter_content_html' | t }}
+                      {% else %}
+                        {{ block.settings.content }}
+                      {% endif %}
                     </div>
                   {% endunless %}
                   {% if form.errors %}
@@ -123,7 +143,11 @@
                       "
                     >
                       <span class="btn__content">
-                        {{- block.settings.button_label -}}
+                        {%- if block.settings.button_label == 'Subscribe' -%}
+                          {{- 'info.newsletter_button' | t -}}
+                        {%- else -%}
+                          {{- block.settings.button_label -}}
+                        {%- endif -%}
                       </span>
                     </button>
                   </div>

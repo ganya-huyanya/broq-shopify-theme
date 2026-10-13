@@ -220,7 +220,11 @@
     "announcement_free_shipping_html": "<p>Free worldwide shipping</p>",
     "footer_instagram_cta_html": "<p>Show us your broq moments. Tag @broq.world on Instagram to share your style.</p>",
     "shipping_free_worldwide": "Free worldwide shipping",
-    "shipping_taxes_duties_included": "Taxes & Duties Included"
+    "shipping_taxes_duties_included": "Taxes & Duties Included",
+    "newsletter_heading": "Email sign-up",
+    "newsletter_content_html": "<p>Subscribe to our Newsletter for our exclusive drops, private events and latest sales</p>",
+    "newsletter_button": "Subscribe",
+    "newsletter_success_html": "<p>Success! You’ve been subscribed.</p>"
   },
   "labels": {
     "previous_article": "Previous article",

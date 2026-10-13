@@ -4384,6 +4384,10 @@
     "announcement_free_shipping_html": "<p>Безкоштовна доставка по всьому світу</p>",
     "footer_instagram_cta_html": "<p>Покажи нам свої моменти з broq. Познач @broq.world в Instagram, щоб поділитися своїм стилем.</p>",
     "shipping_free_worldwide": "Безкоштовна доставка по всьому світу",
-    "shipping_taxes_duties_included": "Податки та мито включені"
+    "shipping_taxes_duties_included": "Податки та мито включені",
+    "newsletter_heading": "Підписка на розсилку",
+    "newsletter_content_html": "<p>Підпишіться на розсилку, щоб першими дізнаватися про дропи, закриті події та розпродажі</p>",
+    "newsletter_button": "Підписатися",
+    "newsletter_success_html": "<p>Готово! Ви підписані.</p>"
   }
 }
