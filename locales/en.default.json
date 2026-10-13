@@ -204,10 +204,6 @@
     "will_be_powered_by_html": "This shop will be powered by {{ shopify }}",
     "you_must_agree": "You must agree with the terms and conditions of sales to checkout",
     "you_save_amount": "You save {{ saved_amount }}",
-    "in_stock_status": "IN STOCK",
-    "made_to_order_status": "MADE TO ORDER",
-    "in_stock_detail": "(dispatches within 24-48hrs)",
-    "made_to_order_detail": "(production takes 10 business days, then dispatched)",
     "accordion_product_details": "PRODUCT DETAILS",
     "accordion_how_to_measure_ring_size": "HOW TO MEASURE MY RING SIZE",
     "accordion_size_chart": "SIZE CHART",
@@ -224,9 +220,7 @@
     "announcement_free_shipping_html": "<p>Free worldwide shipping</p>",
     "footer_instagram_cta_html": "<p>Show us your broq moments. Tag @broq.world on Instagram to share your style.</p>",
     "shipping_free_worldwide": "Free worldwide shipping",
-    "shipping_taxes_duties_included": "Taxes & Duties Included",
-    "shipping_ships_within": "Ships within 24-48hrs",
-    "last_items_status": "Last items"
+    "shipping_taxes_duties_included": "Taxes & Duties Included"
   },
   "labels": {
     "previous_article": "Previous article",
