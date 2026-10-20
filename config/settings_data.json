@@ -225,7 +225,8 @@
               "threshold": 150,
               "calculation": "total",
               "success": "Congrats! You've unlocked free shipping."
-            }
+            },
+            "disabled": true
           }
         },
         "block_order": [
