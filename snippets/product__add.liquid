@@ -281,6 +281,10 @@
     {% endunless %}
 
     {% unless is_edit_section %}
+      {% render 'product__payment-logos' %}
+    {% endunless %}
+
+    {% unless is_edit_section %}
       {% render 'product__shipping-info' %}
     {% endunless %}
 

@@ -1,0 +1,27 @@
+{% comment %}
+  Payment method logos under the buy buttons.
+  Ukrainian storefront (uk): Apple Pay, Visa, Mastercard, Google Pay, Plata by mono.
+  Everything else: Apple Pay, Visa, Mastercard, PayPal, Google Pay.
+{% endcomment %}
+<style>
+  .broq-pay { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; padding: 0 2px; }
+  .broq-pay img { display: block; width: auto; max-width: 100%; }
+  .broq-pay .h-applepay { height: 22px; }
+  .broq-pay .h-visa { height: 15px; }
+  .broq-pay .h-mastercard { height: 24px; }
+  .broq-pay .h-googlepay { height: 22px; }
+  .broq-pay .h-paypal { height: 17px; }
+  .broq-pay .h-plata { height: 18px; }
+</style>
+<div class="broq-pay" aria-label="{{ 'labels.payment_methods' | t: default: 'Payment methods' }}">
+  <img class="h-applepay" src="{{ 'payment-applepay.svg' | asset_url }}" alt="Apple Pay" loading="lazy">
+  <img class="h-visa" src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" loading="lazy">
+  <img class="h-mastercard" src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" loading="lazy">
+  {%- if request.locale.iso_code == 'uk' -%}
+    <img class="h-googlepay" src="{{ 'payment-googlepay.svg' | asset_url }}" alt="Google Pay" loading="lazy">
+    <img class="h-plata" src="{{ 'payment-plata.svg' | asset_url }}" alt="Plata by mono" loading="lazy">
+  {%- else -%}
+    <img class="h-paypal" src="{{ 'payment-paypal.svg' | asset_url }}" alt="PayPal" loading="lazy">
+    <img class="h-googlepay" src="{{ 'payment-googlepay.svg' | asset_url }}" alt="Google Pay" loading="lazy">
+  {%- endif -%}
+</div>
