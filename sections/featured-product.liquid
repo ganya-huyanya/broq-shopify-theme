@@ -150,9 +150,7 @@
                 <div 
                   class="color__inherit mt-4 px-4"
                   x-show="current_variant_exists && current_variant_available">
-                  {% form 'product', product, x-ref: 'productForm' %}
-                    {{ form | payment_button  }}
-                  {% endform %}
+                  <!--BROQ_DYNAMIC_CHECKOUT-->
                 </div>
               {% endif %}
               {% unless block.settings.content == blank %}
@@ -309,9 +307,7 @@
                   class="color__inherit mt-4 px-4"
                   x-show="current_variant_exists && current_variant_available"
                 >
-                  {% form 'product', product, x-ref: 'productForm' %}
-                    {{ form | payment_button  }}
-                  {% endform %}
+                  <!--BROQ_DYNAMIC_CHECKOUT-->
                 </div>
               {% endif %}
               {% unless block.settings.content == blank %}
@@ -408,6 +404,7 @@
         w-full
       {% endcapture %}
       {% form 'product', product, class: form_class, x-ref: 'productForm' %}
+        {%- capture dynamic_checkout_button -%}{{ form | payment_button }}{%- endcapture -%}
         <div
           class="
             w-full !px-0
@@ -461,7 +458,7 @@
               {% if section.settings.media_gallery_position == 'left' %}
                 {{ gallery_snippet }}
               {% endif %}
-              {{ first_column_blocks }}
+              {{ first_column_blocks | replace: '<!--BROQ_DYNAMIC_CHECKOUT-->', dynamic_checkout_button }}
             </div>
 
             {% comment %} Second column {% endcomment %}
@@ -485,7 +482,7 @@
               {% if section.settings.media_gallery_position == 'right' %}
                 {{ gallery_snippet }}
               {% endif %}
-              {{ second_column_blocks }}
+              {{ second_column_blocks | replace: '<!--BROQ_DYNAMIC_CHECKOUT-->', dynamic_checkout_button }}
             </div>
 
             {% comment %} Left column for alternate mobile order {% endcomment %}
@@ -510,7 +507,7 @@
                 {% if section.settings.media_gallery_position == 'left' %}
                   {{ gallery_snippet }}
                 {% endif %}
-                {{ first_column_blocks }}
+                {{ first_column_blocks | replace: '<!--BROQ_DYNAMIC_CHECKOUT-->', dynamic_checkout_button }}
               </div>
             {% endif %}
 
