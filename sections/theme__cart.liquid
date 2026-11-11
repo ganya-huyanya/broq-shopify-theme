@@ -384,7 +384,9 @@
     {%- capture bq_rows -%}
       {%- for p in collections.all.products limit: 24 -%}
         {%- assign bq_t = p.title | append: ' ' | append: p.handle | downcase -%}
-        {%- if p.available and bq_shown < 4 and bq_t contains 'тест' == false and bq_t contains 'test' == false -%}
+        {%- assign bq_skip = false -%}
+        {%- if bq_t contains 'тест' or bq_t contains 'test' -%}{%- assign bq_skip = true -%}{%- endif -%}
+        {%- if p.available and bq_shown < 4 and bq_skip == false -%}
           {%- assign bq_shown = bq_shown | plus: 1 -%}
           <a class="bq-empty__row" href="{{ p.url }}">
             <span class="bq-empty__img">{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="64" height="64" loading="lazy">{% endif %}</span>
