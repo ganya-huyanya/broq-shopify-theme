@@ -28,7 +28,7 @@
     {% comment %} Assets {% endcomment %}
     {% render 'theme__styles' %}
     {% render 'assets' with 'styles.css', preload_stylesheet: true %}
-    {%- if tinyscript -%}{{ content_for_header }}{%- else -%}{% render 'tiny-script-control' %}{%- endif -%}
+    {{ content_for_header }}
     {{ 'custom.css' | asset_url | stylesheet_tag }}
 
     {% comment %} Structured data {% endcomment %}
@@ -153,6 +153,5 @@
     {% comment %} Scripts {% endcomment %}
     {% render 'assets' with 'main.js' %}
     {% render 'theme__scripts' %}
-  {{'tiny-img-link-preloader.js' | asset_url | script_tag }}
 </body>
 </html>
