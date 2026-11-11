@@ -375,9 +375,34 @@
 
   </section>
 
+  {% comment %} Empty cart (BROQ): message, button and a few products {% endcomment %}
+  <div class="bq-empty" x-show="cart.items.length == 0" x-cloak>
+    <p class="bq-empty__title">{{ 'labels.cart_empty_title' | t }}</p>
+    <p class="bq-empty__text">{{ 'labels.cart_empty_text' | t }}</p>
+    <a class="bq-empty__btn" href="{{ routes.all_products_collection_url }}">{{ 'labels.cart_empty_cta' | t }}</a>
+    {%- assign bq_shown = 0 -%}
+    {%- capture bq_rows -%}
+      {%- for p in collections.all.products limit: 24 -%}
+        {%- assign bq_t = p.title | append: ' ' | append: p.handle | downcase -%}
+        {%- if p.available and bq_shown < 4 and bq_t contains 'тест' == false and bq_t contains 'test' == false -%}
+          {%- assign bq_shown = bq_shown | plus: 1 -%}
+          <a class="bq-empty__row" href="{{ p.url }}">
+            <span class="bq-empty__img">{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="64" height="64" loading="lazy">{% endif %}</span>
+            <span class="bq-empty__info"><span class="bq-empty__name">{{ p.title }}</span><span class="bq-empty__price">{{ p.price | money }}</span></span>
+            <span class="bq-empty__plus" aria-hidden="true">+</span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if bq_shown > 0 -%}
+      <h2 class="bq-empty__sub">{{ 'labels.cart_empty_recs' | t }}</h2>
+      {{ bq_rows }}
+    {%- endif -%}
+  </div>
+
   {% comment %} Empty cart {% endcomment %}
   {% for block in section.blocks %}
-    {% if block.type == 'empty_cart' %}
+    {% if block.type == 'empty_cart' and false %}
       <aside 
         class="
           mt-auto p-4
