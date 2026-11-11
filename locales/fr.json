@@ -6,6 +6,7 @@
     "add_order_note": "Ajouter une note de commande",
     "add_to_apple_wallet": "Ajouter à Apple Wallet",
     "add_to_cart": "Ajouter au panier",
+    "buy_now": "Acheter maintenant",
     "back": "Précédent",
     "back_to": "Retour à {{ collection }}",
     "back_to_homepage": "Retour à la page d’accueil",
