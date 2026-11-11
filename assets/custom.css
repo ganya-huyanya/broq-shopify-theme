@@ -510,7 +510,7 @@ body.collection :is(.card__heading, .product-card__title, h3) + * { margin-top: 
 
 /* upsell */
 .bq-up { padding: 8px 20px 16px; }
-.bq-up__title { margin: 0 0 10px; font-family: var(--type__font-heading-family); font-size: 16px; font-weight: normal; text-transform: none; letter-spacing: 0; color: #333; }
+.bq-up__title { margin: 0 0 10px; font-family: var(--type__font-header-family); font-size: 16px; font-weight: normal; text-transform: none; letter-spacing: 0; color: #333; }
 .bq-up__row { display: flex; align-items: center; gap: 12px; padding: 8px; margin-bottom: 8px; border: 1px solid #d9d9d9; }
 .bq-up__img { flex: 0 0 56px; width: 56px; height: 56px; display: block; }
 .bq-up__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
