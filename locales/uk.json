@@ -4166,6 +4166,12 @@
     "pre_order": "Замовити "
   },
   "labels": {
+    "cart_drawer_title": "Товари",
+    "cart_checkout": "Перейти до оформлення",
+    "cart_subtotal": "Підсумок",
+    "cart_upsell_title": "Доповнити сет",
+    "cart_upsell_add": "Додати до кошика",
+    "cart_upsell_choose": "Обрати варіант",
     "color": "Колір",
     "large": "Великий",
     "menu": "Меню",

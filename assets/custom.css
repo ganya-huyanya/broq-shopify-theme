@@ -441,3 +441,115 @@ body.collection :is(.card__heading, .product-card__title, h3) + * { margin-top: 
   font-size: 12px !important;
   line-height: 1.3 !important;
 }
+
+/* =====================================================================
+   BROQ CART DRAWER — restyle (white drawer, minimal lines, black/white/grey)
+   Scoped to .bq-cart-bg / .bq-ci / .bq-up / .bq-qty / .bq-subtotal / .bq-trust
+   ===================================================================== */
+.bq-cart-bg,
+.bq-cart-bg aside,
+.bq-cart-bg section,
+.bq-cart-bg .color__bg-neutral {
+  background-color: #fff !important;
+  color: #222;
+}
+.bq-cart-bg { font-size: 13px; }
+
+/* header: «Товари» + thin × (always visible, also on mobile) */
+.bq-cart-bg > section:first-child {
+  display: flex !important;
+  border: 0 !important;
+  padding: 18px 20px 6px !important;
+}
+.bq-cart-bg > section:first-child > span {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: #333;
+}
+.bq-cart-bg > section:first-child button.btn {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 4px !important;
+  box-shadow: none !important;
+  min-width: 0;
+}
+.bq-cart-bg > section:first-child button.btn svg { stroke-width: 1; width: 22px; height: 22px; }
+.bq-cart-bg > section:first-child button.btn:hover { opacity: 0.6; }
+
+/* cart line */
+.bq-ci {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  transition: opacity 0.3s;
+}
+.bq-ci--loading { opacity: 0.6; }
+.bq-ci__img { flex: 0 0 120px; width: 120px; height: 120px; display: block; }
+.bq-ci__img img { width: 100%; height: 100%; object-fit: cover; display: block; border: 0; background: none; }
+.bq-ci__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+.bq-ci__title { display: block; font-size: 14px; line-height: 1.35; color: #222; text-decoration: none !important; }
+.bq-ci__price { margin-top: 4px; font-size: 13px; color: #222; }
+.bq-ci__price s { margin-left: 6px; color: #888; }
+.bq-ci__meta { margin: 3px 0 0; font-size: 11px; color: #888; }
+.bq-ci__link { display: inline-block; margin: 4px 12px 0 0; padding: 0; font-size: 11px; color: #888; text-decoration: underline; text-underline-offset: 2px; background: none; border: 0; cursor: pointer; }
+.bq-ci__link:hover { color: #222; }
+.bq-ci__actions { display: flex; align-items: center; justify-content: space-between; }
+.bq-ci__remove { display: inline-flex; padding: 6px; margin-right: -6px; color: #555; background: none; border: 0; cursor: pointer; }
+.bq-ci__remove:hover { color: #000; }
+.bq-ci__remove:disabled { opacity: 0.4; }
+.bq-ci__remove svg { stroke-width: 1.5; }
+
+/* quantity: – 1 +  (no borders) */
+.bq-qty { display: inline-flex; align-items: center; }
+.bq-qty__btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0; background: none; border: 0; color: #222; cursor: pointer; }
+.bq-qty__btn:disabled { opacity: 0.3; cursor: default; }
+.bq-qty__btn svg { stroke-width: 1.5; }
+.bq-qty__input { width: 32px; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; text-align: center; font-size: 13px; color: #222; -moz-appearance: textfield; appearance: textfield; }
+.bq-qty__input::-webkit-outer-spin-button,
+.bq-qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* upsell */
+.bq-up { padding: 8px 20px 16px; }
+.bq-up__title { margin: 0 0 10px; font-family: var(--type__font-heading-family); font-size: 16px; font-weight: normal; text-transform: none; letter-spacing: 0; color: #333; }
+.bq-up__row { display: flex; align-items: center; gap: 12px; padding: 8px; margin-bottom: 8px; border: 1px solid #d9d9d9; }
+.bq-up__img { flex: 0 0 56px; width: 56px; height: 56px; display: block; }
+.bq-up__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bq-up__info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bq-up__name { font-size: 13px; line-height: 1.3; color: #222; text-decoration: none !important; }
+.bq-up__price { font-size: 12px; color: #666; }
+.bq-up__add { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: none; border: 0; color: #222; cursor: pointer; text-decoration: none !important; }
+.bq-up__add:hover { color: #000; opacity: 0.6; }
+.bq-up__add:disabled { opacity: 0.4; }
+.bq-up__add svg { stroke-width: 1.5; }
+
+/* order note */
+.bq-cart-bg .border--b-width { border-color: transparent !important; }
+.bq-cart-bg textarea { border: 1px solid #d9d9d9 !important; background: #fff !important; font-size: 13px; }
+
+/* footer: subtotal, checkout, small note */
+.bq-cart-bg > aside { border-top: 1px solid #ececec !important; }
+.bq-subtotal { display: flex; align-items: baseline; justify-content: space-between; width: 100%; padding: 0 20px 12px; font-size: 14px; color: #222; }
+.bq-subtotal__label { color: #333; }
+.bq-cart-bg aside form { padding-left: 20px !important; padding-right: 20px !important; }
+.bq-cart-bg aside form .btn {
+  width: 100% !important;
+  padding: 16px 20px;
+  background: #333 !important;
+  border: 1px solid #333 !important;
+  border-radius: 0 !important;
+  color: #fff !important;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase !important;
+}
+.bq-cart-bg aside form .btn * { color: inherit !important; }
+.bq-cart-bg aside form .btn:hover { background: #fff !important; color: #000 !important; border-color: #000 !important; opacity: 1; }
+.bq-trust { margin: 10px 0 0; text-align: center; font-size: 10px; line-height: 1.5; letter-spacing: 0.08em; text-transform: uppercase; color: #8a8a8a; }
+
+@media (max-width: 767px) {
+  .bq-ci__img { flex-basis: 96px; width: 96px; height: 96px; }
+  .bq-ci { gap: 12px; padding: 14px 16px; }
+  .bq-up { padding-left: 16px; padding-right: 16px; }
+  .bq-subtotal { padding-left: 16px; padding-right: 16px; }
+}
+/* END BROQ CART DRAWER */

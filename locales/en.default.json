@@ -228,6 +228,12 @@
     "newsletter_success_html": "<p>Success! You’ve been subscribed.</p>"
   },
   "labels": {
+    "cart_drawer_title": "Items",
+    "cart_checkout": "Proceed to checkout",
+    "cart_subtotal": "Subtotal",
+    "cart_upsell_title": "Complete the set",
+    "cart_upsell_add": "Add to cart",
+    "cart_upsell_choose": "Choose options",
     "previous_article": "Previous article",
     "next_article": "Next article",
     "color": "Color",

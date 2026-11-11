@@ -84,6 +84,79 @@
       {% render 'template__cart-item' %}
     </template>
 
+    {% comment %} Upsell: product recommendations based on the first cart line {% endcomment %}
+    <div
+      class="bq-up"
+      x-data="{
+        recs: [],
+        pid: null,
+        async fetchRecs(id, intent) {
+          try {
+            const r = await fetch(Shopify.routes.root + 'recommendations/products.json?product_id=' + id + '&limit=4&intent=' + intent);
+            if (!r.ok) return [];
+            const j = await r.json();
+            const inCart = cart.items.map(i => i.product_id);
+            return (j.products || []).filter(p => p.available && !inCart.includes(p.id) && !/тест|test/i.test(p.handle + ' ' + p.title));
+          } catch (e) { return []; }
+        },
+        async load() {
+          const first = cart.items[0];
+          if (!first) { this.recs = []; this.pid = null; return; }
+          if (first.product_id === this.pid) return;
+          this.pid = first.product_id;
+          let list = await this.fetchRecs(first.product_id, 'complementary');
+          if (list.length === 0) list = await this.fetchRecs(first.product_id, 'related');
+          this.recs = list;
+        },
+        get shown() {
+          const inCart = cart.items.map(i => i.product_id);
+          return this.recs.filter(p => !inCart.includes(p.id)).slice(0, 2);
+        },
+        img(p) {
+          const u = p.featured_image || (p.images && p.images[0]) || '';
+          return u ? u + (u.indexOf('?') > -1 ? '&' : '?') + 'width=160' : '';
+        },
+        single(p) { return p.variants && p.variants.length === 1 && p.variants[0].available; }
+      }"
+      x-init="load(); $watch('cart.items', () => load())"
+      x-show="cart.items.length > 0 && shown.length > 0"
+      x-cloak
+    >
+      <h2 class="bq-up__title">{{ 'labels.cart_upsell_title' | t }}</h2>
+      <template x-for="p in shown" :key="p.id">
+        <div class="bq-up__row">
+          <a class="bq-up__img" :href="p.url" tabindex="-1">
+            <img :src="img(p)" :alt="p.title" width="64" height="64" loading="lazy">
+          </a>
+          <div class="bq-up__info">
+            <a class="bq-up__name" :href="p.url" x-text="p.title"></a>
+            <span class="bq-up__price" x-html="Shopify.formatMoney(p.price)"></span>
+          </div>
+          <button
+            class="bq-up__add"
+            type="button"
+            x-show="single(p)"
+            :disabled="cart_loading"
+            title="{{ 'labels.cart_upsell_add' | t }}"
+            aria-label="{{ 'labels.cart_upsell_add' | t }}"
+            @click="addCartItem(p.variants[0].id, 0, 1, false)"
+          >
+            {% render 'component__icon', icon: 'plus', size: '18', class: '' %}
+          </button>
+          <a
+            class="bq-up__add"
+            x-show="!single(p)"
+            x-cloak
+            :href="p.url"
+            title="{{ 'labels.cart_upsell_choose' | t }}"
+            aria-label="{{ 'labels.cart_upsell_choose' | t }}"
+          >
+            {% render 'component__icon', icon: 'plus', size: '18', class: '' %}
+          </a>
+        </div>
+      </template>
+    </div>
+
     {% comment %} Upsell stacks {% endcomment %}
     {% for block in section.blocks %}
       {% if block.type == 'upsell_featured' and block.settings.upsell_type == 'stacked' %}
@@ -223,58 +296,6 @@
         </div>
       </div>
     {% endif %} 
-
-    {% comment %} Taxes {% endcomment %}
-    {% if cart.taxes_included %}
-      <div
-        class="
-          border--b-width w-full p-4
-          {{ section.settings.color_border }}
-        "
-        x-show="cart.items.length > 0"
-        x-cloak
-      >
-        <p class="type--smaller border--radius color__bg-overlay-1 mb-0 p-2">
-          {{- 'info.shipping_at_checkout_taxes_included' | t -}}
-        </p>
-      </div>
-    {% endif %}
-
-    {% comment %} Subtotal {% endcomment %}
-    <div 
-      class="
-        border--b-width w-full p-4 
-        {{ section.settings.main_color_scheme_second }}
-        {{ section.settings.main_color_border }}
-      "
-      {% if section.settings.show_cart_subtotals %}
-        x-show="cart.total_price > 0"
-        x-cloak
-      {% else %}
-        x-show="cart.total_discount > 0"
-        x-cloak
-      {% endif %}>
-      <div class="mb-1 flex w-full items-center justify-between">
-        <span>{{ 'labels.subtotal' | t }}</span>
-        <span x-html="Shopify.formatMoney(cart.original_total_price, true)"></span>
-      </div>
-      <div 
-        class="mb-1 flex w-full items-center justify-between"
-        x-show="cart.total_discount > 0"
-        x-cloak>
-        <span>{{ 'labels.discount' | t }}</span>
-        <span x-html="'-' + Shopify.formatMoney(cart.total_discount, true)"></span>
-      </div>
-      <div class="flex w-full items-center justify-between">
-        <span class="flex items-center">
-          <strong>{{ 'labels.total' | t }}</strong>
-        </span>
-        <strong
-          class="w-full text-right"
-          x-html="Shopify.formatMoney(cart.total_price, true)">
-        </strong>
-      </div>
-    </div>
 
     {% comment %} Desktop sidebar - upsells and blocks {% endcomment %}
     {% liquid
@@ -436,6 +457,16 @@
         {% endif %}
       {% endfor %}
       
+      {% comment %} Subtotal {% endcomment %}
+      <div
+        class="bq-subtotal"
+        x-show="cart.items.length > 0 && cart.total_price > 0"
+        x-cloak
+      >
+        <span class="bq-subtotal__label">{{ 'labels.cart_subtotal' | t }}</span>
+        <span class="bq-subtotal__value" x-html="Shopify.formatMoney(cart.total_price, true)"></span>
+      </div>
+
       {% comment %} Checkout {% endcomment %}
       <form 
         x-show="cart.items.length > 0" 
@@ -453,7 +484,7 @@
           setTimeout(function(){ 
             checkout_button_loading = false
           }, 5000); 
-          window.location.href = '/checkout';
+          window.location.href = Shopify.routes.root + 'checkout';
         ">
         <div class="mb-0 flex flex-col gap-2">
 
@@ -480,13 +511,7 @@
                 {% render 'component__icon', icon: 'spinner', size: '24', class: '' %}
               </div>
               <div class="btn__content">
-                {{ 'actions.checkout' | t }} 
-                {% if section.settings.show_button_prices %}
-                  {% if settings.type_seperator == 'dot' %}·{% else %}|{% endif %} 
-                  <span 
-                    class="ml-1" 
-                    x-html="Shopify.formatMoney(cart.total_price, true)"></span>
-                {% endif %}
+                {{ 'labels.cart_checkout' | t }}
               </div>
             </button>
           {% else %}
@@ -507,6 +532,10 @@
             </a>
           {% endif %}
           
+          {% if cart.taxes_included %}
+            <p class="bq-trust">{{- 'info.shipping_at_checkout_taxes_included' | t -}}</p>
+          {% endif %}
+
           {% unless section.settings.bottom_disclaimer == blank %}
             <div class="type--smaller space-y-4">
               {{ section.settings.bottom_disclaimer }}
@@ -520,7 +549,7 @@
   </aside>
         
 {% endcapture %}
-{% assign label = 'labels.cart' | t %}
+{% assign label = 'labels.cart_drawer_title' | t %}
 
 {% comment %} Cart {% endcomment %}
 <section
@@ -531,7 +560,7 @@
     mobile_pos: 'bottom',
     desktop_pos: 'right',
     enable_full_height: true,
-    background: section.settings.main_color_scheme_first,
+    background: 'bq-cart-bg color__text',
     content: cart_content,
     top_bar_label: label
   %}
@@ -637,7 +666,7 @@
       </button>
       <button
         class="btn btn--small btn--primary !w-full"
-        @click="checkout_button_loading = true; setTimeout(function(){ checkout_button_loading = false}, 5000); window.location.href = '/checkout';"
+        @click="checkout_button_loading = true; setTimeout(function(){ checkout_button_loading = false}, 5000); window.location.href = Shopify.routes.root + 'checkout';"
       >
         {{ 'actions.checkout' | t }}
         {% if section.settings.show_button_prices %}
