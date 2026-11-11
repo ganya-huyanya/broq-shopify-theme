@@ -13,7 +13,7 @@
   .broq-pay .h-paypal { height: 15px; }
   .broq-pay .h-plata { height: 16px; }
   .broq-pay .h-parts { height: 26px; }
-  @media (max-width: 400px) { .broq-pay { gap: 8px; } }
+  @media (max-width: 400px) { .broq-pay { gap: 6px; } .broq-pay .h-parts { height: 24px; } }
 </style>
 <div class="broq-pay" aria-label="{{ 'labels.payment_methods' | t: default: 'Payment methods' }}">
   <img class="h-applepay" src="{{ 'payment-applepay.svg' | asset_url }}" alt="Apple Pay" loading="lazy">
