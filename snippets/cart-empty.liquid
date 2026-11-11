@@ -12,7 +12,7 @@
         {%- if p.available and bq_shown < 4 and bq_skip == false -%}
           {%- assign bq_shown = bq_shown | plus: 1 -%}
           <a class="bq-empty__row" href="{{ p.url }}">
-            <span class="bq-empty__img">{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="64" height="64" loading="lazy">{% endif %}</span>
+            <span class="bq-empty__img">{% if p.featured_image %}<img src="{{ p.featured_image | image_url: width: 160 }}" alt="{{ p.title | escape }}" width="64" height="64">{% endif %}</span>
             <span class="bq-empty__info"><span class="bq-empty__name">{{ p.title }}</span><span class="bq-empty__price">{{ p.price | money }}</span></span>
             <span class="bq-empty__plus" aria-hidden="true">+</span>
           </a>
