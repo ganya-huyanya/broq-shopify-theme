@@ -244,9 +244,14 @@
 
     {% comment %} Buy now: adds the selected variant and goes straight to checkout, skipping the cart {% endcomment %}
     {% unless is_edit_section %}
+      <style>
+        .broq-buy-now { background: #333 !important; color: #fff !important; border: 1px solid #333 !important; box-shadow: none !important; transition: background-color .2s, color .2s; }
+        .broq-buy-now:hover, .broq-buy-now:focus-visible { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; }
+        .broq-buy-now .btn__content { color: inherit !important; }
+      </style>
       <div class="mt-2 w-full" x-data="{ buying: false }">
         <button
-          class="btn btn--load btn--plain !w-full"
+          class="btn btn--load broq-buy-now !w-full"
           type="button"
           role="button"
           :class="{ 'btn--loading' : buying }"
