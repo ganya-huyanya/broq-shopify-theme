@@ -261,7 +261,7 @@
               body: new FormData($el.closest('form'))
             })
               .then(function(r){ if (!r.ok) { throw new Error('add failed'); } return r.json(); })
-              .then(function(){ window.location.href = '{{ routes.root_url }}checkout'; })
+              .then(function(){ window.location.href = '/checkout'; })
               .catch(function(){ buying = false; });
           "
         >
