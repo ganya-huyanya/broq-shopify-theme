@@ -1,9 +1,28 @@
 {
   "sections": {
-    "main": {
-      "type": "early-bird-page",
-      "settings": {}
+    "grid": {
+      "type": "collection__main",
+      "custom_css": [],
+      "settings": {
+        "spacing_top": 40,
+        "spacing_bottom": 30,
+        "color_scheme": "color__bg-body",
+        "color_background": "#ffffff",
+        "color_text": "color__dark",
+        "color_border": "color__border-divider-1",
+        "color_filter_bar": "color__bg-body",
+        "enable_color_fade": false,
+        "layout_row_desktop": 4,
+        "layout_row_mobile": 2,
+        "filter_placement": "top",
+        "enable_margin": false,
+        "enable_sort": false,
+        "enable_filter": false,
+        "products_per_page": 40
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "grid"
+  ]
 }
