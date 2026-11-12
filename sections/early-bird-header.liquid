@@ -1,0 +1,30 @@
+<style>
+  .ebh { padding: 56px 20px 8px; text-align: center; font-family: inherit; color: inherit; }
+  .ebh__title { margin: 0; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; }
+  .ebh__sub { margin: 10px 0 0; font-size: 13px; opacity: .7; }
+  .ebh__timer { margin: 14px 0 0; font-size: 13px; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+</style>
+<div class="ebh">
+  <p class="ebh__title">Early Bird</p>
+  <p class="ebh__sub">Ціна для підписників. До 19 листопада, 23:59.</p>
+  <p class="ebh__timer" id="ebh-timer" data-end="2026-11-19T23:59:59+02:00"></p>
+</div>
+<script>
+  (function () {
+    var el = document.getElementById('ebh-timer');
+    if (!el) return;
+    var end = new Date(el.getAttribute('data-end')).getTime();
+    function p(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+      var left = Math.max(0, end - Date.now());
+      var d = Math.floor(left / 864e5), h = Math.floor(left % 864e5 / 36e5),
+          m = Math.floor(left % 36e5 / 6e4), s = Math.floor(left % 6e4 / 1e3);
+      el.textContent = d + ' дн  ' + p(h) + ':' + p(m) + ':' + p(s);
+      if (left > 0) setTimeout(tick, 1000);
+    }
+    tick();
+  })();
+</script>
+{% schema %}
+{ "name": "Early Bird header", "settings": [] }
+{% endschema %}

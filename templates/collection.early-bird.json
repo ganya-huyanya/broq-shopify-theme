@@ -1,5 +1,9 @@
 {
   "sections": {
+    "header": {
+      "type": "early-bird-header",
+      "settings": {}
+    },
     "grid": {
       "type": "collection__main",
       "custom_css": [],
@@ -23,6 +27,7 @@
     }
   },
   "order": [
+    "header",
     "grid"
   ]
 }
