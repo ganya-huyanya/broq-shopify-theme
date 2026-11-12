@@ -1,0 +1,104 @@
+{%- comment -%}
+  Early Bird page: black "private preview" collection page.
+  Used only by templates/collection.early-bird.json.
+{%- endcomment -%}
+
+<style>
+  .ebp { background:#000; color:#fff; padding: 72px 24px 96px; }
+  .ebp * { box-sizing: border-box; }
+  .ebp__inner { max-width: 1320px; margin: 0 auto; }
+  .ebp__eyebrow { font-size: 12px; letter-spacing: .32em; text-transform: uppercase; color: #bdbdbd; text-align: center; margin: 0 0 20px; }
+  .ebp__title { font-size: clamp(40px, 8vw, 96px); line-height: .98; text-transform: uppercase; text-align: center; margin: 0; letter-spacing: -.01em; font-weight: 700; }
+  .ebp__lead { max-width: 560px; margin: 24px auto 0; text-align: center; color: #d6d6d6; font-size: 16px; line-height: 1.55; }
+  .ebp__timer { display: flex; justify-content: center; gap: 28px; margin: 44px 0 64px; }
+  .ebp__unit { text-align: center; min-width: 56px; }
+  .ebp__num { display: block; font-size: clamp(28px, 5vw, 44px); font-variant-numeric: tabular-nums; line-height: 1; }
+  .ebp__lab { display: block; margin-top: 8px; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #8c8c8c; }
+  .ebp__timer-note { text-align: center; color: #8c8c8c; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; margin: -40px 0 56px; }
+  .ebp__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px 20px; }
+  @media (max-width: 1000px) { .ebp__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px)  { .ebp { padding: 48px 16px 72px; } .ebp__grid { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; } .ebp__timer { gap: 16px; } }
+  .ebp__card { display: block; color: inherit; text-decoration: none; position: relative; }
+  .ebp__img { position: relative; aspect-ratio: 4 / 5; background: #141414; overflow: hidden; }
+  .ebp__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+  .ebp__card:hover .ebp__img img { transform: scale(1.04); }
+  .ebp__badge { position: absolute; top: 12px; left: 12px; background: #fff; color: #000; font-size: 12px; letter-spacing: .08em; padding: 5px 9px; font-weight: 700; }
+  .ebp__name { margin: 14px 0 6px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .ebp__prices { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+  .ebp__now { font-size: 20px; font-weight: 700; }
+  .ebp__was { font-size: 14px; color: #8c8c8c; text-decoration: line-through; }
+  .ebp__empty { text-align: center; color: #8c8c8c; padding: 40px 0; }
+</style>
+
+<div class="ebp">
+  <div class="ebp__inner">
+    <p class="ebp__eyebrow">Black Friday · Early Bird</p>
+    <h1 class="ebp__title">Ціна<br>для своїх</h1>
+    <p class="ebp__lead">Ранній доступ до ціни на добірку виробів broq до того, як Чорна п’ятниця відкриється для всіх.</p>
+
+    <div class="ebp__timer" id="ebp-timer" data-end="2026-11-19T23:59:59+02:00" aria-live="off">
+      <div class="ebp__unit"><span class="ebp__num" data-u="d">00</span><span class="ebp__lab">днів</span></div>
+      <div class="ebp__unit"><span class="ebp__num" data-u="h">00</span><span class="ebp__lab">годин</span></div>
+      <div class="ebp__unit"><span class="ebp__num" data-u="m">00</span><span class="ebp__lab">хвилин</span></div>
+      <div class="ebp__unit"><span class="ebp__num" data-u="s">00</span><span class="ebp__lab">секунд</span></div>
+    </div>
+    <p class="ebp__timer-note">Ранній доступ до 19 листопада, 23:59</p>
+
+    {%- if collection.products_count > 0 -%}
+    <div class="ebp__grid">
+      {%- for product in collection.products -%}
+        {%- assign pct = 0 -%}
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign diff = product.compare_at_price | minus: product.price -%}
+          {%- assign pct = diff | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        {%- endif -%}
+        <a class="ebp__card" href="{{ product.url | within: collection }}">
+          <div class="ebp__img">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | escape }}" width="800" height="1000" {% if forloop.index > 4 %}loading="lazy"{% endif %}>
+            {%- endif -%}
+            {%- if pct > 0 -%}<span class="ebp__badge">−{{ pct }}%</span>{%- endif -%}
+          </div>
+          <p class="ebp__name">{{ product.title }}</p>
+          <div class="ebp__prices">
+            <span class="ebp__now">{{ product.price | money_without_trailing_zeros }}</span>
+            {%- if product.compare_at_price > product.price -%}
+              <span class="ebp__was">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+            {%- endif -%}
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+    {%- else -%}
+      <p class="ebp__empty">Добірка зараз готується.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var el = document.getElementById('ebp-timer');
+    if (!el) return;
+    var end = new Date(el.getAttribute('data-end')).getTime();
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+      var left = Math.max(0, end - Date.now());
+      var d = Math.floor(left / 864e5), h = Math.floor(left % 864e5 / 36e5),
+          m = Math.floor(left % 36e5 / 6e4), s = Math.floor(left % 6e4 / 1e3);
+      var v = { d: d, h: h, m: m, s: s };
+      Object.keys(v).forEach(function (k) {
+        var n = el.querySelector('[data-u="' + k + '"]');
+        if (n) n.textContent = pad(v[k]);
+      });
+      if (left > 0) setTimeout(tick, 1000);
+    }
+    tick();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Early Bird page",
+  "settings": []
+}
+{% endschema %}

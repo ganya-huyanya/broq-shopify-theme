@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "early-bird-page",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
