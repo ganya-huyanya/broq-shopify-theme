@@ -6,7 +6,11 @@
 </style>
 <div class="ebh">
   <p class="ebh__title">Early Bird</p>
+  {%- if request.locale.iso_code == 'uk' -%}
   <p class="ebh__sub">Ціна для підписників. До 19 листопада, 23:59.</p>
+  {%- else -%}
+  <p class="ebh__sub">Subscriber prices. Until 19 November, 23:59 (Kyiv time).</p>
+  {%- endif -%}
   <p class="ebh__timer" id="ebh-timer" data-end="2026-11-19T23:59:59+02:00"></p>
 </div>
 <script>
@@ -19,7 +23,7 @@
       var left = Math.max(0, end - Date.now());
       var d = Math.floor(left / 864e5), h = Math.floor(left % 864e5 / 36e5),
           m = Math.floor(left % 36e5 / 6e4), s = Math.floor(left % 6e4 / 1e3);
-      el.textContent = d + ' дн  ' + p(h) + ':' + p(m) + ':' + p(s);
+      el.textContent = d + (document.documentElement.lang === 'uk' ? ' дн  ' : ' d  ') + p(h) + ':' + p(m) + ':' + p(s);
       if (left > 0) setTimeout(tick, 1000);
     }
     tick();
