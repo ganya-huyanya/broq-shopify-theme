@@ -109,8 +109,18 @@
       {% endif %}
     {% endif %}
 
-    {% comment %} Savings {% endcomment %}
-    {% if settings.product_card_savings_badge != "none" %}
+    {% comment %} Early Bird: always show "-NN%" badge {% endcomment %}
+    {% if template.suffix == 'early-bird' %}
+      {% if product.compare_at_price > product.price %}
+        {% assign eb_pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}
+        {% capture eb_badge %}−{{ eb_pct }}%{% endcapture %}
+        {% render 'component__badge',
+          background: badge_background,
+          text: badge_foreground,
+          border: badge_foreground,
+          content: eb_badge %}
+      {% endif %}
+    {% elsif settings.product_card_savings_badge != "none" %}
       {% if product.price < product.compare_at_price %}
         {% if settings.product_card_savings_badge == "percent" %}
           {% capture badge_content %}{{ discount_percentage }}{% endcapture %}
