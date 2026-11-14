@@ -26,7 +26,7 @@
 <section class="ebgif" id="eb-gif-{{ section.id }}">
   {%- if section.settings.url != blank -%}<a href="{{ section.settings.url }}">{%- endif -%}
   <picture>
-    <source media="(min-width: 768px)" srcset="{{ desktop_src }}" width="1920" height="1080">
+    <source media="(min-width: 768px)" srcset="{{ desktop_src }}" width="1440" height="810">
     <img src="{{ mobile_src }}" width="720" height="1280" alt="{{ alt_text | escape }}" decoding="async"{% if section.index > 1 %} loading="lazy"{% endif %}>
   </picture>
   {%- if section.settings.url != blank -%}</a>{%- endif -%}
@@ -39,10 +39,10 @@
   "settings": [
     { "type": "url", "id": "url", "label": "Link (optional)" },
     { "type": "text", "id": "mobile_uk", "label": "Mobile GIF URL, Ukrainian", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-mobile-uk.gif?v=1794689768" },
-    { "type": "text", "id": "desktop_uk", "label": "Desktop GIF URL, Ukrainian", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-uk.gif?v=1794689769" },
+    { "type": "text", "id": "desktop_uk", "label": "Desktop GIF URL, Ukrainian", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-1440-uk.gif?v=1794689958" },
     { "type": "text", "id": "alt_uk", "label": "Alt text, Ukrainian", "default": "BROQ Early Bird: підпишись і отримай ранній доступ" },
     { "type": "text", "id": "mobile_en", "label": "Mobile GIF URL, English", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-mobile-en.gif?v=1794689768" },
-    { "type": "text", "id": "desktop_en", "label": "Desktop GIF URL, English", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-en.gif?v=1794689768" },
+    { "type": "text", "id": "desktop_en", "label": "Desktop GIF URL, English", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-1440-en.gif?v=1794689958" },
     { "type": "text", "id": "alt_en", "label": "Alt text, English", "default": "BROQ Early Bird: subscribe for early access" }
   ],
   "presets": [{ "name": "Early Bird GIF banner" }]
