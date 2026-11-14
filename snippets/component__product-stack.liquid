@@ -1,3 +1,5 @@
+{%- comment -%} Early Bird copies are only shown on the early-bird collection {%- endcomment -%}
+{%- if product.tags contains 'eb-copy' and template.suffix != 'early-bird' -%}{%- else -%}
 <!-- snippets/component__product-stack.liquid -->
 {% comment %}
   This file is a component for displaying an upsell item in a vertical stack. It is primarily used for cart upsells to increase the Average Order Value (AOV) by highlighting products that are an easy upsell.
@@ -167,3 +169,4 @@
     </div>
   </div>
 </div>
+{%- endif -%}

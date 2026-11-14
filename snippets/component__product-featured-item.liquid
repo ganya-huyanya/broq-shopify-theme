@@ -1,3 +1,5 @@
+{%- comment -%} Early Bird copies are only shown on the early-bird collection {%- endcomment -%}
+{%- if product.tags contains 'eb-copy' and template.suffix != 'early-bird' -%}{%- else -%}
 <!-- snippets/component__product-featured-item.liquid -->
 {% comment %}
   This snippet is used to display a product thumbnail with four product photos. It accepts a liquid product object as an argument.
@@ -975,3 +977,4 @@
     {{ product_price_and_add }}
   </div>
 </div>
+{%- endif -%}
