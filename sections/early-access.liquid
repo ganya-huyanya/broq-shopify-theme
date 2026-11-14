@@ -17,21 +17,14 @@
 <div class="ea">
   <div class="ea__card">
     <p class="ea__eyebrow">Early Bird</p>
-    {%- form 'customer', class: 'ea__form' -%}
-      {%- if form.posted_successfully? -%}
-        <h1 class="ea__title">{% if is_uk %}Дякуємо{% else %}Thank you{% endif %}</h1>
-        <p class="ea__ok">{% if is_uk %}Лист із доступом вже в дорозі.{% else %}Your access email is on its way.{% endif %}</p>
-      {%- else -%}
-        <h1 class="ea__title">{% if is_uk %}Підпишись, щоб отримати ранній доступ до Black Friday{% else %}Subscribe to get early access to Black Friday{% endif %}</h1>
-        <p class="ea__text">{% if is_uk %}Спеціальні ціни для підписників діють до 19 листопада, 23:59. Ми надішлемо листа з посиланням.{% else %}Special subscriber prices run until 19 November, 23:59 (Kyiv time). We will email you the link.{% endif %}</p>
-        {%- if form.errors -%}<p class="ea__err">{{ form.errors | default_errors }}</p>{%- endif -%}
-        <input type="hidden" name="contact[tags]" value="early_bird{% if is_uk %},lang_uk{% endif %}">
-        <input class="ea__input" type="text" name="contact[first_name]" placeholder="{% if is_uk %}Ім’я{% else %}First name{% endif %}" autocomplete="given-name">
-        <input class="ea__input" type="email" name="contact[email]" placeholder="E-mail" required autocomplete="email" autocorrect="off" autocapitalize="off">
-        <button class="ea__btn" type="submit">{% if is_uk %}Підписатися{% else %}Subscribe{% endif %}</button>
-        <p class="ea__legal">{% if is_uk %}Підписуючись, ти погоджуєшся отримувати листи BROQ. Відписатися можна в будь-який момент.{% else %}By subscribing you agree to receive BROQ emails. Unsubscribe at any time.{% endif %}</p>
-      {%- endif -%}
-    {%- endform -%}
+    <h1 class="ea__title">{% if is_uk %}Підпишись, щоб отримати ранній доступ до Black Friday{% else %}Subscribe to get early access to Black Friday{% endif %}</h1>
+    <p class="ea__text">{% if is_uk %}Спеціальні ціни для підписників діють до 19 листопада, 23:59. Ми надішлемо листа з посиланням.{% else %}Special subscriber prices run until 19 November, 23:59 (Kyiv time). We will email you the link.{% endif %}</p>
+    {%- comment -%} Omnisend embedded forms (so the Welcome automation, which triggers on Omnisend signup forms, fires) {%- endcomment -%}
+    {%- if is_uk -%}
+      <div id="omnisend-embedded-v2-6af83a32884bde93471b5aa9"></div>
+    {%- else -%}
+      <div id="omnisend-embedded-v2-6af83a336e39df0b9553768b"></div>
+    {%- endif -%}
   </div>
 </div>
 {% schema %}
