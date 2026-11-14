@@ -153,25 +153,5 @@
     {% comment %} Scripts {% endcomment %}
     {% render 'assets' with 'main.js' %}
     {% render 'theme__scripts' %}
-  {%- comment -%} Early Bird signup popups: Omnisend can't see the page language, so both language forms are eligible and the wrong one is hidden here. {%- endcomment -%}
-  <script>
-    (function () {
-      var uk = (document.documentElement.lang || '').toLowerCase().indexOf('uk') === 0;
-      var wrong = uk ? /EARLY ACCESS TO BLACK FRIDAY/ : /РАННІЙ ДОСТУП ДО BLACK FRIDAY/;
-      function sweep(root) {
-        var c = document.getElementById('omnisend-forms-container');
-        if (!c) return;
-        Array.prototype.forEach.call(c.children, function (el) {
-          if (el.getAttribute('data-eb-lang') === '1') return;
-          if (wrong.test(el.textContent || '')) {
-            el.style.setProperty('display', 'none', 'important');
-            el.setAttribute('data-eb-lang', '1');
-          }
-        });
-      }
-      new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true });
-      sweep();
-    })();
-  </script>
 </body>
 </html>
