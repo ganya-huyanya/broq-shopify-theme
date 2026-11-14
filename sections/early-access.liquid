@@ -1,0 +1,39 @@
+{%- assign is_uk = false -%}
+{%- if request.locale.iso_code == 'uk' -%}{%- assign is_uk = true -%}{%- endif -%}
+<style>
+  .ea { position: relative; padding: 64px 20px 96px; background: #f4f4f4 url('{{ 'early-access-bg.jpg' | asset_url }}') center / cover no-repeat; }
+  .ea::before { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); backdrop-filter: grayscale(1); }
+  .ea__card { position: relative; max-width: 620px; margin: 0 auto; background: #fff; color: #111; padding: 48px 56px 44px; text-align: center; }
+  .ea__eyebrow { margin: 0; font-size: 12px; letter-spacing: .24em; font-weight: 600; text-transform: uppercase; }
+  .ea__title { margin: 16px 0 14px; font-size: 30px; line-height: 1.1; font-weight: 800; text-transform: uppercase; }
+  .ea__text { margin: 0 0 22px; font-size: 15px; line-height: 1.5; color: #333; }
+  .ea__input { display: block; width: 100%; height: 50px; margin: 0 0 14px; padding: 0 16px; border: 1px solid #111; border-radius: 0; font: inherit; font-size: 15px; background: #fff; color: #111; }
+  .ea__btn { display: block; width: 100%; height: 52px; border: 0; border-radius: 0; background: #111; color: #fff; font: inherit; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+  .ea__legal { margin: 14px 0 0; font-size: 11px; line-height: 1.4; color: #777; }
+  .ea__ok { margin: 0; font-size: 18px; line-height: 1.4; }
+  .ea__err { margin: 0 0 14px; font-size: 13px; color: #b00020; }
+  @media (max-width: 640px) { .ea { padding: 32px 12px 56px; } .ea__card { padding: 32px 22px 28px; } .ea__title { font-size: 24px; } }
+</style>
+<div class="ea">
+  <div class="ea__card">
+    <p class="ea__eyebrow">Early Bird</p>
+    {%- form 'customer', class: 'ea__form' -%}
+      {%- if form.posted_successfully? -%}
+        <h1 class="ea__title">{% if is_uk %}Дякуємо{% else %}Thank you{% endif %}</h1>
+        <p class="ea__ok">{% if is_uk %}Лист із доступом вже в дорозі.{% else %}Your access email is on its way.{% endif %}</p>
+      {%- else -%}
+        <h1 class="ea__title">{% if is_uk %}Підпишись, щоб отримати ранній доступ до Black Friday{% else %}Subscribe to get early access to Black Friday{% endif %}</h1>
+        <p class="ea__text">{% if is_uk %}Спеціальні ціни для підписників діють до 19 листопада, 23:59. Ми надішлемо листа з посиланням.{% else %}Special subscriber prices run until 19 November, 23:59 (Kyiv time). We will email you the link.{% endif %}</p>
+        {%- if form.errors -%}<p class="ea__err">{{ form.errors | default_errors }}</p>{%- endif -%}
+        <input type="hidden" name="contact[tags]" value="early_bird{% if is_uk %},lang_uk{% endif %}">
+        <input class="ea__input" type="text" name="contact[first_name]" placeholder="{% if is_uk %}Ім’я{% else %}First name{% endif %}" autocomplete="given-name">
+        <input class="ea__input" type="email" name="contact[email]" placeholder="E-mail" required autocomplete="email" autocorrect="off" autocapitalize="off">
+        <button class="ea__btn" type="submit">{% if is_uk %}Підписатися{% else %}Subscribe{% endif %}</button>
+        <p class="ea__legal">{% if is_uk %}Підписуючись, ти погоджуєшся отримувати листи BROQ. Відписатися можна в будь-який момент.{% else %}By subscribing you agree to receive BROQ emails. Unsubscribe at any time.{% endif %}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+{% schema %}
+{ "name": "Early access signup", "settings": [] }
+{% endschema %}
