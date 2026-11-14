@@ -1,0 +1,117 @@
+{% liquid
+  assign locale_language = request.locale.iso_code | split: '-' | first
+  assign hero_image = section.settings.image_en
+  assign still_image = section.settings.still_image_en
+  assign desktop_image = section.settings.desktop_image_en
+  assign desktop_still_image = section.settings.desktop_still_image_en
+  assign signup_url = section.settings.signup_page.url
+  if locale_language == 'uk' or localization.country.iso_code == 'UA'
+    assign hero_image = section.settings.image
+    assign still_image = section.settings.still_image
+    assign desktop_image = section.settings.desktop_image
+    assign desktop_still_image = section.settings.desktop_still_image
+    if locale_language != 'uk'
+      assign ukrainian_locale = localization.available_languages | where: 'iso_code', 'uk' | first
+      if ukrainian_locale
+        assign signup_url = ukrainian_locale.root_url | append: '/pages/' | append: section.settings.signup_page.handle | replace: '//', '/'
+      endif
+    endif
+  endif
+%}
+{% if hero_image != blank and section.settings.signup_page != blank %}
+  {% assign section_prefix = section.id | split: '__' | first %}
+  <div
+    class="broq-early-bird-mobile"
+    x-data="{ paused: false, hoverPaused: false, focusPaused: false, hiddenPaused: document.hidden }"
+    @pointerenter="hoverPaused = $event.pointerType === 'mouse'"
+    @pointerleave="hoverPaused = false"
+    @focusin="focusPaused = true"
+    @focusout="focusPaused = $el.contains($event.relatedTarget)"
+    @visibilitychange.document="hiddenPaused = document.hidden"
+  >
+    <a href="{{ signup_url }}" class="broq-early-bird-mobile__link">
+      <picture>
+        {% if desktop_image != blank %}
+          <source media="(min-width: 768px) and (prefers-reduced-motion: reduce)" srcset="{{ desktop_still_image | image_url: width: 1920 }}" width="{{ desktop_still_image.width }}" height="{{ desktop_still_image.height }}">
+          <source
+            media="(min-width: 768px)"
+            srcset="{{ desktop_image | image_url: width: 1920 }}"
+            width="{{ desktop_image.width }}"
+            height="{{ desktop_image.height }}"
+            data-animated="{{ desktop_image | image_url: width: 1920 }}"
+            data-still="{{ desktop_still_image | image_url: width: 1920 }}"
+            :srcset="paused || hoverPaused || focusPaused || hiddenPaused ? $el.dataset.still : $el.dataset.animated"
+          >
+        {% endif %}
+        <source media="(max-width: 767px) and (prefers-reduced-motion: reduce)" srcset="{{ still_image | image_url: width: 720 }}" width="{{ still_image.width }}" height="{{ still_image.height }}">
+        <source
+          media="(max-width: 767px)"
+          width="{{ hero_image.width }}"
+          height="{{ hero_image.height }}"
+          srcset="{{ hero_image | image_url: width: 720 }}"
+          data-animated="{{ hero_image | image_url: width: 720 }}"
+          data-still="{{ still_image | image_url: width: 720 }}"
+          :srcset="paused || hoverPaused || focusPaused || hiddenPaused ? $el.dataset.still : $el.dataset.animated"
+        >
+        <img
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          width="{{ hero_image.width }}"
+          height="{{ hero_image.height }}"
+          alt="{{ hero_image.alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
+    </a>
+    <button
+      type="button"
+      class="broq-early-bird-mobile__pause"
+      @click="paused = !paused"
+      :aria-pressed="paused.toString()"
+      :aria-label="paused ? $el.dataset.play : $el.dataset.pause"
+      aria-label="{{ 'actions.pause' | t | escape }}"
+      data-play="{{ 'actions.play' | t | escape }}"
+      data-pause="{{ 'actions.pause' | t | escape }}"
+    >
+      <svg x-show="!paused" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3h3v10H4zm5 0h3v10H9z"/></svg>
+      <svg x-show="paused" x-cloak aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m5 2 9 6-9 6z"/></svg>
+    </button>
+  </div>
+  {% style %}
+    @media {% if desktop_image != blank %}(min-width: 0px){% else %}(max-width: 767px){% endif %} {
+      #shopify-section-{{ section_prefix }}__banner_rNh7AG,
+      #shopify-section-{{ section_prefix }}__banner_EDtP3B,
+      #shopify-section-{{ section_prefix }}__banner_mfQVbc { display: none; }
+    }
+  {% endstyle %}
+{% endif %}
+
+{% style %}
+  .broq-early-bird-mobile { position: relative; display: none; }
+  .broq-early-bird-mobile__link, .broq-early-bird-mobile picture, .broq-early-bird-mobile img { display: block; width: 100%; }
+  .broq-early-bird-mobile img { height: auto; }
+  .broq-early-bird-mobile__pause { position: absolute; right: 12px; bottom: 12px; display: grid; place-items: center; width: 44px; height: 44px; color: white; background: rgb(0 0 0 / 55%); border: 1px solid rgb(255 255 255 / 60%); border-radius: 50%; cursor: pointer; }
+  .broq-early-bird-mobile a:focus-visible, .broq-early-bird-mobile button:focus-visible { outline: 2px solid white; outline-offset: -4px; }
+  .broq-early-bird-mobile__pause:active { transform: scale(.97); }
+  @media (max-width: 767px) { .broq-early-bird-mobile { display: block; } }
+  @media (min-width: 768px) { .broq-early-bird-mobile { display: {% if desktop_image != blank %}block{% else %}none{% endif %}; } }
+  @media (prefers-reduced-motion: reduce) { .broq-early-bird-mobile__pause { display: none; } }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Early bird banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Ukrainian mobile GIF" },
+    { "type": "image_picker", "id": "still_image", "label": "Still image for reduced motion" },
+    { "type": "image_picker", "id": "image_en", "label": "English mobile GIF" },
+    { "type": "image_picker", "id": "still_image_en", "label": "English still image" },
+    { "type": "image_picker", "id": "desktop_image", "label": "Ukrainian desktop GIF" },
+    { "type": "image_picker", "id": "desktop_still_image", "label": "Ukrainian desktop still" },
+    { "type": "image_picker", "id": "desktop_image_en", "label": "English desktop GIF" },
+    { "type": "image_picker", "id": "desktop_still_image_en", "label": "English desktop still" },
+    { "type": "page", "id": "signup_page", "label": "Early access signup page" }
+  ],
+  "presets": [{ "name": "Early bird banner" }]
+}
+{% endschema %}
