@@ -1,0 +1,50 @@
+{%- comment -%}
+  Early Bird GIF banner. One <picture> per language: mobile GIF below 768px, desktop GIF from 768px.
+  Language comes from request.locale (uk = Ukrainian, everything else = English).
+  Only the matching source is downloaded by the browser.
+{%- endcomment -%}
+{%- liquid
+  assign is_uk = false
+  if request.locale.iso_code == 'uk'
+    assign is_uk = true
+  endif
+  if is_uk
+    assign mobile_src = section.settings.mobile_uk
+    assign desktop_src = section.settings.desktop_uk
+    assign alt_text = section.settings.alt_uk
+  else
+    assign mobile_src = section.settings.mobile_en
+    assign desktop_src = section.settings.desktop_en
+    assign alt_text = section.settings.alt_en
+  endif
+-%}
+{%- if mobile_src != blank and desktop_src != blank -%}
+<style>
+  .ebgif { display: block; width: 100%; line-height: 0; background: #000; }
+  .ebgif picture, .ebgif img { display: block; width: 100%; height: auto; }
+</style>
+<section class="ebgif" id="eb-gif-{{ section.id }}">
+  {%- if section.settings.url != blank -%}<a href="{{ section.settings.url }}">{%- endif -%}
+  <picture>
+    <source media="(min-width: 768px)" srcset="{{ desktop_src }}" width="1920" height="1080">
+    <img src="{{ mobile_src }}" width="720" height="1280" alt="{{ alt_text | escape }}" decoding="async"{% if section.index > 1 %} loading="lazy"{% endif %}>
+  </picture>
+  {%- if section.settings.url != blank -%}</a>{%- endif -%}
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Early Bird GIF banner",
+  "settings": [
+    { "type": "url", "id": "url", "label": "Link (optional)" },
+    { "type": "text", "id": "mobile_uk", "label": "Mobile GIF URL, Ukrainian", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-mobile-uk.gif?v=1794689768" },
+    { "type": "text", "id": "desktop_uk", "label": "Desktop GIF URL, Ukrainian", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-uk.gif?v=1794689769" },
+    { "type": "text", "id": "alt_uk", "label": "Alt text, Ukrainian", "default": "BROQ Early Bird: підпишись і отримай ранній доступ" },
+    { "type": "text", "id": "mobile_en", "label": "Mobile GIF URL, English", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-mobile-en.gif?v=1794689768" },
+    { "type": "text", "id": "desktop_en", "label": "Desktop GIF URL, English", "default": "https://cdn.shopify.com/s/files/1/0592/4300/3988/files/broq-eb-desktop-en.gif?v=1794689768" },
+    { "type": "text", "id": "alt_en", "label": "Alt text, English", "default": "BROQ Early Bird: subscribe for early access" }
+  ],
+  "presets": [{ "name": "Early Bird GIF banner" }]
+}
+{% endschema %}
