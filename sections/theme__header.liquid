@@ -135,7 +135,11 @@
             {% endif %}
           >
         {% endif %}
-          {{ link.title }}
+          {% if link.url contains 'collections/early-bird' %}
+            <span style="background: #000; color: #fff; padding: 7px 16px; line-height: 1; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; white-space: nowrap;">{{ link.title }}</span>
+          {% else %}
+            {{ link.title }}
+          {% endif %}
           {% if link.levels >= 1 %}
             {% render 'component__icon', icon: 'chevron-down', class: 'ml-1 [&>*]:animation-300', size: '20' %}
           {% endif %}
