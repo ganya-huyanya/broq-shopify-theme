@@ -33,7 +33,8 @@
 
     {% comment %} Structured data {% endcomment %}
     {% render 'theme__structured-data' %}
-  </head>
+    {%- comment -%}uac-checkout:start{%- endcomment -%}{% render 'uac-checkout' %}{%- comment -%}uac-checkout:end{%- endcomment -%}
+</head>
 
   <body
     class="
