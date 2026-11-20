@@ -11,6 +11,7 @@
   {%- else -%}
   <p class="ebh__sub">Subscriber prices. Until 19 November, 23:59 (Kyiv time).</p>
   {%- endif -%}
+  <p class="ebh__sub">{% if request.locale.iso_code == 'uk' %}Промокоди не діють на товари зі знижкою.{% else %}Promo codes do not apply to discounted items.{% endif %}</p>
   <p class="ebh__timer" id="ebh-timer" data-end="2026-11-19T23:59:59+02:00"></p>
 </div>
 <script>
