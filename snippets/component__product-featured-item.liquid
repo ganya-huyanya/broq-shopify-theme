@@ -1,5 +1,5 @@
-{%- comment -%} Early Bird copies are only shown on the early-bird collection {%- endcomment -%}
-{%- if product.tags contains 'eb-copy' and template.suffix != 'early-bird' -%}{%- else -%}
+{%- comment -%} Black Friday: discounted copies (eb-copy) are shown everywhere; their full-price originals (eb-original) are hidden {%- endcomment -%}
+{%- if product.tags contains 'eb-original' -%}{%- else -%}
 <!-- snippets/component__product-featured-item.liquid -->
 {% comment %}
   This snippet is used to display a product thumbnail with four product photos. It accepts a liquid product object as an argument.

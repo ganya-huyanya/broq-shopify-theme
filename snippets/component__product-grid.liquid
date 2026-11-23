@@ -1,5 +1,5 @@
-{%- comment -%} Early Bird copies are only shown on the early-bird collection {%- endcomment -%}
-{%- if product.tags contains 'eb-copy' and template.suffix != 'early-bird' -%}{%- else -%}
+{%- comment -%} Black Friday: discounted copies (eb-copy) are shown everywhere; their full-price originals (eb-original) are hidden {%- endcomment -%}
+{%- if product.tags contains 'eb-original' -%}{%- else -%}
 <!-- snippets/component__product-grid.liquid -->
 {% comment %}
   This is a standard product thumbnail snippet used to display product information in a grid or list view.
@@ -112,7 +112,7 @@
     {% endif %}
 
     {% comment %} Early Bird: always show "-NN%" badge {% endcomment %}
-    {% if template.suffix == 'early-bird' %}
+    {% if product.tags contains 'eb-copy' %}
       {% if product.compare_at_price > product.price %}
         {% assign eb_pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}
         {% capture eb_badge %}−{{ eb_pct }}%{% endcapture %}
