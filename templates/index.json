@@ -90,7 +90,7 @@
       "type": "product-grid",
       "name": "t:sections.product_grid.name",
       "settings": {
-        "collection": "black-friday",
+        "collection": "early-bird",
         "products_count": 6,
         "heading": "",
         "content": "",
