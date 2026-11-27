@@ -634,7 +634,7 @@ const search = {
       }
       const data2 = await response.json();
       const { products: products2, collections: collections2, pages, articles, queries } = data2.resources.results;
-      this.search_items = products2 ? products2 : [];
+      this.search_items = products2 ? products2.filter((p) => !(Array.isArray(p.tags) ? p.tags : String(p.tags || "").split(",")).map((t) => String(t).trim()).includes("eb-original")) : [];
       this.search_items_collections = collections2 ? collections2 : [];
       this.search_items_pages = pages ? pages : [];
       this.search_items_articles = articles ? articles : [];

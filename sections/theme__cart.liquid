@@ -96,7 +96,7 @@
             if (!r.ok) return [];
             const j = await r.json();
             const inCart = cart.items.map(i => i.product_id);
-            return (j.products || []).filter(p => p.available && !inCart.includes(p.id) && !/тест|test/i.test(p.handle + ' ' + p.title));
+            return (j.products || []).filter(p => !(Array.isArray(p.tags) ? p.tags : String(p.tags || '').split(',')).map(t => String(t).trim()).includes('eb-original') && p.available && !inCart.includes(p.id) && !/тест|test/i.test(p.handle + ' ' + p.title));
           } catch (e) { return []; }
         },
         async load() {

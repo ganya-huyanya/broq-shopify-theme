@@ -43,6 +43,7 @@
         )
         .then(response => response.json())
         .then(({ products }) => {
+          products = products.filter(p => !(Array.isArray(p.tags) ? p.tags : String(p.tags || '').split(',')).map(t => String(t).trim()).includes('eb-original'));
           if (products.length > 0) {
             this.complementary_products = products;
             this.initial_loading = false;
