@@ -340,7 +340,7 @@
                 {% endif %}
               "
               href="{{ link.url }}">
-              {% if link.url contains 'collections/early-bird' %}
+              {% if link.url contains 'collections/early-bird' or link.url contains 'collections/black-friday' %}
                 <span class="{{ section.settings.main_font }}" style="background: #000; color: #fff; padding: 8px 18px; line-height: 1; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;">
                   {{ link.title }}
                 </span>
