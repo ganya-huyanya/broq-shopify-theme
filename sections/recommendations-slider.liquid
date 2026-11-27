@@ -82,6 +82,7 @@
           fetch(window.Shopify.routes.root + 'recommendations/products.json?product_id={{ product.id }}&limit={{ section.settings.products_count }}&intent={{ section.settings.intent }}')
           .then(response => response.json())
           .then(({ products }) => {
+            products = products.filter(p => !(Array.isArray(p.tags) ? p.tags : String(p.tags || '').split(',')).map(t => String(t).trim()).includes('eb-original'));
             if (products.length > 0) {
               this.recomended_products = products;
               this.loadingRecomendations = true;
