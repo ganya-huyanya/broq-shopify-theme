@@ -111,8 +111,8 @@
       {% endif %}
     {% endif %}
 
-    {% comment %} Black Friday: "SALE" badge on discounted copies {% endcomment %}
-    {% if product.tags contains 'eb-copy' %}
+    {% comment %} Black Friday: "SALE" badge on every discounted product {% endcomment %}
+    {% if product.compare_at_price > product.price %}
       {% if product.compare_at_price > product.price %}
         {% render 'component__badge',
           background: badge_background,
